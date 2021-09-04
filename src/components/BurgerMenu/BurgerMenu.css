@@ -14,8 +14,12 @@
     cursor: pointer;
 }
 
+.burger-menu_visible {
+    display: none;
+}
+
 @media (max-width: 768px) {
-    .burger-menu {
+    .burger-menu_visible {
         display: block;
     }
 }

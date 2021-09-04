@@ -1,10 +1,10 @@
 import React from 'react';
 import './BurgerMenu.css';
 
-function BurgerMenu({onOpenMenu}) {
+function BurgerMenu({isLoggedIn, onOpenMenu}) {
     return (
         <button 
-            className="burger-menu"
+            className={isLoggedIn? `burger-menu burger-menu_visible` : `burger-menu`}
             type="button" 
             aria-label="burger-menu"
             onClick={onOpenMenu}

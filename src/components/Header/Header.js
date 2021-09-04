@@ -10,6 +10,7 @@ import BurgerMenu from '../BurgerMenu/BurgerMenu';
 function Header({isMainActive, isMoviesActive, isSavedMoviesActive}) {
     const [isLogin, setIsLogin] = useState(false);
     const [isMenuOpened, setIsMenuOpened] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     function handleLogin () {
         setIsLogin(!isLogin)
@@ -17,6 +18,10 @@ function Header({isMainActive, isMoviesActive, isSavedMoviesActive}) {
     function handleMenuOpen() {
       setIsMenuOpened(!isMenuOpened)
     };
+
+    function handleLogginMenu () {
+        setIsLoggedIn(!isLoggedIn)
+    }
 
     return (
         <>
@@ -26,12 +31,14 @@ function Header({isMainActive, isMoviesActive, isSavedMoviesActive}) {
                     <AuthContainer 
                         onLoggin={handleLogin}
                         isOpen={isLogin}
+                        onLoginMenu={handleLogginMenu}
                     />
                     <AccountContainer
                         isOpen={isLogin}
                     />
                     <BurgerMenu 
                         onOpenMenu={handleMenuOpen}
+                        isLoggedIn={isLoggedIn}
                     />
                 </div>
             </header>
