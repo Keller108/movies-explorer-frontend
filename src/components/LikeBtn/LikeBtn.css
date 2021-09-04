@@ -14,8 +14,13 @@
     outline: none;
     border: none;
     cursor: pointer;
+    transition: all .3s;
 }
 
 .movies-card-item__like-btn_visible {
     background-image: url("../../images/card-like_visible.svg");
+}
+
+.movies-card-item__like-btn_visible:hover {
+    background-image: url("../../images/card-like_close.svg");
 }
