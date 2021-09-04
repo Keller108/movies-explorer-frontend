@@ -51,10 +51,11 @@
     color: #000
 }
 
-@media (max-width: 768px) {
+@media (max-width: 760px) {
     .techs__skills-list {
         max-width: 60%;
-        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(1fr, 80px));
+        gap: 15px;
     }
 }
 
