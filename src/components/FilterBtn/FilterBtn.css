@@ -1,0 +1,29 @@
+.filter-container {
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    margin-bottom: 40px;
+    padding: 0 auto;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: center;
+}
+
+.filter {
+    width: auto;
+    height: auto;
+    box-sizing: border-box;
+    outline: none;
+    border: none;
+    margin: 0;
+    background-color: rgba(0,0,0,0);
+    margin-right: 12px;
+}
+
+.filter__text {
+    font-size: 12px;
+    color: #fff;
+    line-height: 1;
+    font-weight: normal;
+    margin: 0;
+}

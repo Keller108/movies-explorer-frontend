@@ -1,0 +1,32 @@
+.filter-btn {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    width: 36px;
+    height: 20px;
+    outline: none;
+    border-radius: 20px;
+    border: none;
+    margin: 0 auto;
+    background-color: #3DDC84;
+    padding: 2px;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.filter-btn_hidden {
+    justify-content: flex-start;
+    background-color: #343434;
+}
+
+.filter-btn__circle {
+    width: 16px;
+    height: 16px;
+    background-color: #fff;
+    border-radius: 100%;
+}
+
+.filter-btn__circle_hidden {
+    background-color: #A0A0A0;
+}
