@@ -8,7 +8,7 @@ import AboutMe from '../AboutMe/AboutMe';
 import Portfolio from '../Portfolio/Portfolio';
 import Footer from '../Footer/Footer';
 
-function Main() {
+function Main({loggedIn}) {
     
     return (
         <>
@@ -19,6 +19,7 @@ function Main() {
                     isMainActive={true}
                     isSavedMoviesActive={false}
                     isMoviesActive={false}
+                    loggedIn={loggedIn}
                 />
                 <Promo />
                 <AboutProject />

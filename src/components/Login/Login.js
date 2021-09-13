@@ -2,7 +2,12 @@ import React from 'react';
 import FormSection from '../FormSection/FormSection';
 import Form from '../Form/Form';
 
-function Login({user}) {
+function Login() {
+
+    const user = {
+        name : `Илон`,
+        email : `space-x@gmail.com`,
+      }
     
     return (
         <FormSection
