@@ -10,6 +10,7 @@ import Register from '../Register/Register';
 import Login from '../Login/Login';
 import NotFound from '../NotFound/NotFound';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import api from '../../utils/api';
 import * as auth from '../../utils/auth';
 
 function App() {
@@ -69,6 +70,14 @@ function App() {
     .catch(err => console.log(err))
   };
 
+  function handleUpdateUser(userData) {
+    api.updateInfo(userData)
+    .then((data) => {
+        setCurrentUser(data)
+    })
+    .catch(err => console.log(err));
+  }
+
   function signOut() {
       localStorage.removeItem('jwt')
       setLoggedIn(false)
@@ -88,14 +97,18 @@ function App() {
                   <ProtectedRoute 
                     exact path="/movies"
                     component={Movies}
+                    loggedIn={loggedIn}
                   />
                   <ProtectedRoute 
                     exact path="/saved-movies"
                     component={SavedMovies}
+                    loggedIn={loggedIn}
                   />
                   <ProtectedRoute 
                     exact path="/profile"
                     component={Profile}
+                    loggedIn={loggedIn}
+                    onProfileChange={onRegister}
                   />
                   <Route exact path="/signup">
                       <Register

@@ -5,13 +5,14 @@ import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Footer from '../Footer/Footer';
 
-function Movies() {
+function Movies({loggedIn}) {
     return (
         <>
             <Header 
-                isMoviesActive={true}
-                isMainActive={false}
+                isMainActive={true}
                 isSavedMoviesActive={false}
+                isMoviesActive={false}
+                loggedIn={loggedIn}
             />
             <SearchForm />
             <MoviesCardList />

@@ -25,11 +25,13 @@ function Header({loggedIn, isMainActive, isMoviesActive, isSavedMoviesActive}) {
                             <AccountContainer
                                 isOpen={loggedIn}
                             />
-                            <BurgerMenu />
+                            <BurgerMenu 
+                                onOpenMenu={handleMenuOpen}
+                            />
                         </div>
                     </header>
                     <MenuContainer 
-                        isOpen={loggedIn}
+                        isOpen={isMenuOpened}
                         isMain={isMainActive}
                         isMovies={isMoviesActive}
                         isSavedMovies={isSavedMoviesActive}

@@ -1,35 +1,70 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Profile.css';
 import Header from '../Header/Header';
 
-function Profile() {
+function Profile({loggedIn, onProfileChange}) {
 
-    const user = {
-        name : `Никита`,
-        email : `keller108@mail.ru`,
-    } 
+    const [email, setEmail] = useState('');
+    const [name, setName] = useState('');
     
+    const handleChangeEmail = (e) => {
+        setEmail(e.target.value)
+    }
+
+    const handleChangeName = (e) => {
+        setName(e.target.value)
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        onProfileChange({name, email})
+
+    }
+
     return (    
         <>
-            <Header />
+            <Header 
+                loggedIn={loggedIn}
+            />
             <section className="profile">
-                <form className="profile__form">
+                <form className="profile__form" name="profile-form" onSubmit={handleSubmit}>
                     <h1 className="profile__title">
                         Привет, Никита!
                     </h1>
                     <div className="profile__inputs-wrapper">
                         <div className="profile__label-wrapper"> 
-                            <label className="profile__label" for="profile-name">
+                            <label className="profile__label" htmlFor="profile-name">
                                 Имя
                             </label>
-                            <input className="profile__input" id="profile-name" placeholder="Ваше имя" defaultValue={user.name} maxlength="30" minlength="2"/>
+                            <input
+                                className="profile__input"
+                                id="profile-name"
+                                placeholder="Ваше имя"
+                                name="name"
+                                onChange={handleChangeName}
+                                value={name || ''}
+                                maxLength="30"
+                                minLength="2"
+                            />
                         </div>
                         <div className="profile__border-line"></div>
                         <div className="profile__label-wrapper"> 
-                            <label className="profile__label" for="profile-email"> 
+                            <label 
+                                className="profile__label"
+                                htmlFor="profile-email"> 
                                 Почта
                             </label>
-                            <input className="profile__input" id="profile-email" type="email" placeholder="Ваш е-mail" defaultValue={user.email} maxlength="30" minlength="8"/>
+                            <input
+                                className="profile__input"
+                                id="profile-email"
+                                type="email"
+                                name="email"
+                                onChange={handleChangeEmail}
+                                value={email || ''}
+                                placeholder="Ваш е-mail"
+                                maxLength="30"
+                                minLength="8"
+                            />
                         </div>    
                     </div>
                     <ul className="profile__action-container">
