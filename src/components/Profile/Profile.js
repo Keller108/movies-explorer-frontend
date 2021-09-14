@@ -1,11 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import './Profile.css';
 import Header from '../Header/Header';
+import {CurrentUserContext} from '../../contexts/CurrentUserContext';
 
-function Profile({loggedIn, onProfileChange}) {
+function Profile({loggedIn, onProfileChange, onLogout }) {
 
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
+
+    const currentUser = useContext(CurrentUserContext);
+
+    useEffect(() => {
+        setName(currentUser.name);
+        setEmail(currentUser.email);
+    }, [currentUser, loggedIn])
     
     const handleChangeEmail = (e) => {
         setEmail(e.target.value)
@@ -72,7 +80,11 @@ function Profile({loggedIn, onProfileChange}) {
                             <button className="profile__action-btn transparent-link" type="submit">Редактировать</button>
                         </li>
                         <li className="profile__action-item">
-                            <button className="profile__action-btn profile__action-btn_type_signout transparent-link" type="button">Выйти из аккаунта</button>
+                            <button
+                                className="profile__action-btn profile__action-btn_type_signout transparent-link"
+                                type="button"
+                                onClick={onLogout}
+                            >Выйти из аккаунта</button>
                         </li>
                     </ul>
                 </form>

@@ -16,6 +16,7 @@ import * as auth from '../../utils/auth';
 function App() {
 
   const [loggedIn, setLoggedIn] = useState(false);
+  const [userData, setUserData] = useState({});
   const [currentUser, setCurrentUser] = useState({});
 
   const history = useHistory(); 
@@ -42,6 +43,16 @@ function App() {
         })
     }
   };
+
+  useEffect(() => {
+    if (loggedIn === true) {
+        api.getInfo()
+        .then((data) => {
+            setCurrentUser(data)
+        })
+        .catch(err => console.log(err))
+    }
+  }, [loggedIn])
 
   function handleRegister ({name, email, password}) {
     return auth.register(name, email, password)
@@ -81,7 +92,7 @@ function App() {
   function signOut() {
       localStorage.removeItem('jwt')
       setLoggedIn(false)
-      history.push('/sign-in')
+      history.push('/signin')
   };
 
   return (
@@ -108,7 +119,8 @@ function App() {
                     exact path="/profile"
                     component={Profile}
                     loggedIn={loggedIn}
-                    onProfileChange={onRegister}
+                    onProfileChange={handleUpdateUser}
+                    onLogout={signOut}
                   />
                   <Route exact path="/signup">
                       <Register
