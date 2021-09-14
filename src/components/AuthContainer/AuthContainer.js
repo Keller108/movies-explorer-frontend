@@ -5,20 +5,24 @@ import { Link } from 'react-router-dom';
 function AuthContainer() {
 
     return (
-        <div className="header__auth-container">
-                    <Link className="header__auth-link transparent-link" to="/signup">
-                        Регистрация
-                    </Link>
-                    <Link className="header__auth-link header__auth-link_type_signin transparent-link" to="/signin">
-                        Войти
-                    </Link>
+        <ul className="header__auth-container">
+            <li>
+                <Link className="header__auth-link transparent-link" to="/signup">
+                    Регистрация
+                </Link>
+            </li>
+            <li>
+                <Link className="header__auth-link header__auth-link_type_signin transparent-link" to="/signin">
+                    Войти
+                </Link>
+            </li>
                     {/* <button 
                         className="header__auth-link header__auth-link_type_signin transparent-link" 
                         onClick={(e) => {onLoggin(); onLoginMenu()}}
                     >
                         Войти
                     </button> */}
-                </div>
+        </ul>
     )
 };
 

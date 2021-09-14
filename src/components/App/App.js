@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
 import './App.css';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
-import * as auth from '../../utils/auth';
 import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
 import SavedMovies from '../SavedMovies/SavedMovies';
@@ -11,6 +10,7 @@ import Register from '../Register/Register';
 import Login from '../Login/Login';
 import NotFound from '../NotFound/NotFound';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import * as auth from '../../utils/auth';
 
 function App() {
 
@@ -42,8 +42,8 @@ function App() {
     }
   };
 
-  function handleRegister ({email, password}) {
-    return auth.register(email, password)
+  function handleRegister ({name, email, password}) {
+    return auth.register(name, email, password)
     .then((res) => {
         if (res) {
             history.push('/signin')
@@ -99,15 +99,17 @@ function App() {
                   />
                   <Route exact path="/signup">
                       <Register
+                        onRegister={handleRegister}
                       />
                   </Route>
                   <Route exact path="/signin">
                       <Login
+                        onLogin={handleLogin}
                       />
                   </Route>
                   <Route>
                     { loggedIn ? <Redirect to="/"/> : <Redirect to="/signin"/>}
-                </Route>
+                  </Route>
                   <Route exact path="*">
                       <NotFound />
                   </Route>
