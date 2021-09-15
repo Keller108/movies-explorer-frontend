@@ -1,18 +1,25 @@
-import React, { useState } from 'react';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+import React, { useState, useEffect, useContext } from 'react';
 import './Profile.css';
 import Header from '../Header/Header';
 
 function Profile({loggedIn, userData, onProfileChange, onLogout }) {
 
-    const [email, setEmail] = useState('');
     const [name, setName] = useState('');
-
-    const handleChangeEmail = (e) => {
-        setEmail(e.target.value)
-    }
+    const [email, setEmail] = useState('');
+    const currentUser = useContext(CurrentUserContext);
+    
+    useEffect(() => {
+        setName(currentUser.name);
+        setEmail(currentUser.email);
+    }, [loggedIn, currentUser])
 
     const handleChangeName = (e) => {
         setName(e.target.value)
+    }
+
+    const handleChangeEmail = (e) => {
+        setEmail(e.target.value)
     }
 
     const handleSubmit = (e) => {
@@ -42,7 +49,7 @@ function Profile({loggedIn, userData, onProfileChange, onLogout }) {
                                 placeholder="Ваше имя"
                                 name="name"
                                 onChange={handleChangeName}
-                                defaultValue={userData.name || ''}
+                                value={name || ''}
                                 maxLength="30"
                                 minLength="2"
                             />
@@ -60,7 +67,7 @@ function Profile({loggedIn, userData, onProfileChange, onLogout }) {
                                 type="email"
                                 name="email"
                                 onChange={handleChangeEmail}
-                                defaultValue={userData.email || ''}
+                                value={email || ''}
                                 placeholder="Ваш е-mail"
                                 maxLength="30"
                                 minLength="8"

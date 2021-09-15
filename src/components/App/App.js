@@ -10,7 +10,7 @@ import Register from '../Register/Register';
 import Login from '../Login/Login';
 import NotFound from '../NotFound/NotFound';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
-import api from '../../utils/api';
+import * as api from '../../utils/api';
 import * as auth from '../../utils/auth';
 
 function App() {
@@ -49,10 +49,11 @@ function App() {
   };
 
   useEffect(() => {
-    if (loggedIn === true) {
+    if (loggedIn) { 
         api.getInfo()
         .then((data) => {
             setCurrentUser(data)
+            history.push('/');
         })
         .catch(err => console.log(err))
     }
@@ -89,6 +90,7 @@ function App() {
     api.updateInfo(userData)
     .then((data) => {
         setCurrentUser(data)
+        history.push('/')
     })
     .catch(err => console.log(err));
   }

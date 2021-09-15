@@ -1,33 +1,29 @@
-class Api {
-    constructor(config) {
-        this._baseUrl = config.baseUrl;
-    }
+export const baseUrl = 'https://api.movies108.nomoredomains.monster';
 
-    getInfo() {
-        return fetch(`${this._baseUrl}/users/me`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
-            }
-        })
-            .then(this._checkResponse)
-    }
+const handleResponse = res => res.ok ? res.json() : Promise.reject(`Ошибка ${res.status}`)
 
-    updateInfo(userData) {
-        const dataObject = {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
-            },
-            body: JSON.stringify(userData),
-        }
-        return fetch(`${this._baseUrl}/users/me`, dataObject)
-            .then(this._checkResponse)
+export const getInfo = () => {
+    const dataObj = {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+        },
     }
+    return fetch(`${baseUrl}/users/me`, dataObj)
+        .then(handleResponse)
 }
 
-export default new Api({
-    baseUrl: 'https://api.movies108.nomoredomains.monster',
-})
+export const updateInfo = (userData) => {
+    const dataObject = {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+        },
+        body: JSON.stringify(userData),
+    }
+    return fetch(`${baseUrl}/users/me`, dataObject)
+        .then(handleResponse)
+}

@@ -19,7 +19,7 @@ function MoviesCardList() {
     return (
         <section className="movies-card-section">
             <Preloader />
-            <p class="movies-card-section__text-not-found movies-card-section__text-not-found_hidden">
+            <p className="movies-card-section__text-not-found movies-card-section__text-not-found_hidden">
                 По вашему запросу ничего не найдено.
             </p>
             <ul className="movies-card-list">
