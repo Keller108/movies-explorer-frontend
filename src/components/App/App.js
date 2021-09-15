@@ -31,8 +31,12 @@ function App() {
         auth.getContent(jwt)
         .then((res) => {
             if (res) {
-                history.push('/')
-                setLoggedIn(true)
+              setUserData({
+                name: res.name,
+                email: res.email,
+              })
+              history.push('/')
+              setLoggedIn(true)
             } else {
                 localStorage.removeItem('jwt')
             }
@@ -118,6 +122,7 @@ function App() {
                   <ProtectedRoute 
                     exact path="/profile"
                     component={Profile}
+                    userData={userData}
                     loggedIn={loggedIn}
                     onProfileChange={handleUpdateUser}
                     onLogout={signOut}

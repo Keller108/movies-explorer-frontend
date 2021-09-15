@@ -1,20 +1,12 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState } from 'react';
 import './Profile.css';
 import Header from '../Header/Header';
-import {CurrentUserContext} from '../../contexts/CurrentUserContext';
 
-function Profile({loggedIn, onProfileChange, onLogout }) {
+function Profile({loggedIn, userData, onProfileChange, onLogout }) {
 
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
 
-    const currentUser = useContext(CurrentUserContext);
-
-    useEffect(() => {
-        setName(currentUser.name);
-        setEmail(currentUser.email);
-    }, [currentUser, loggedIn])
-    
     const handleChangeEmail = (e) => {
         setEmail(e.target.value)
     }
@@ -37,7 +29,7 @@ function Profile({loggedIn, onProfileChange, onLogout }) {
             <section className="profile">
                 <form className="profile__form" name="profile-form" onSubmit={handleSubmit}>
                     <h1 className="profile__title">
-                        Привет, Никита!
+                        Привет, {userData.name}!
                     </h1>
                     <div className="profile__inputs-wrapper">
                         <div className="profile__label-wrapper"> 
@@ -50,7 +42,7 @@ function Profile({loggedIn, onProfileChange, onLogout }) {
                                 placeholder="Ваше имя"
                                 name="name"
                                 onChange={handleChangeName}
-                                value={name || ''}
+                                value={userData.name || ''}
                                 maxLength="30"
                                 minLength="2"
                             />
@@ -68,7 +60,7 @@ function Profile({loggedIn, onProfileChange, onLogout }) {
                                 type="email"
                                 name="email"
                                 onChange={handleChangeEmail}
-                                value={email || ''}
+                                value={userData.email || ''}
                                 placeholder="Ваш е-mail"
                                 maxLength="30"
                                 minLength="8"
