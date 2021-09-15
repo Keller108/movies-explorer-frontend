@@ -92,7 +92,7 @@ function App() {
   function signOut() {
       localStorage.removeItem('jwt')
       setLoggedIn(false)
-      history.push('/signin')
+      history.push('/')
   };
 
   return (
