@@ -10,7 +10,8 @@ import Register from '../Register/Register';
 import Login from '../Login/Login';
 import NotFound from '../NotFound/NotFound';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
-import * as api from '../../utils/api';
+import * as moviesApi from '../../utils/MoviesApi';
+import * as api from '../../utils/MainApi';
 import * as auth from '../../utils/auth';
 
 function App() {
@@ -18,12 +19,13 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [userData, setUserData] = useState({});
   const [currentUser, setCurrentUser] = useState({});
+  const [cards, setCards] = useState([]);
 
   const history = useHistory(); 
 
   useEffect(() => {
     tokenCheck()
-  }, [loggedIn]);
+  }, []);
 
   function tokenCheck() {
     const jwt = localStorage.getItem('jwt')
@@ -57,6 +59,18 @@ function App() {
         })
         .catch(err => console.log(err))
     }
+  }, [loggedIn])
+
+  useEffect(() => {
+    if (loggedIn === true) {
+        moviesApi.getMovies() 
+        .then((data) => {
+            setCards(data)
+            console.log(data)
+        })         
+        .catch(err => console.log(err)) 
+    }
+      
   }, [loggedIn])
 
   function handleRegister ({name, email, password}) {
@@ -115,6 +129,7 @@ function App() {
                     exact path="/movies"
                     component={Movies}
                     loggedIn={loggedIn}
+                    cards={cards}
                   />
                   <ProtectedRoute 
                     exact path="/saved-movies"

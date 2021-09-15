@@ -12,7 +12,7 @@
 
 .movies-card-item__img {
     width: 100%;
-    height: auto;
+    height: 150px;
     margin: 0;
     font-size: 0;
     box-sizing: border-box;
