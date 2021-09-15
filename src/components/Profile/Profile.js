@@ -42,7 +42,7 @@ function Profile({loggedIn, userData, onProfileChange, onLogout }) {
                                 placeholder="Ваше имя"
                                 name="name"
                                 onChange={handleChangeName}
-                                value={userData.name || ''}
+                                defaultValue={userData.name || ''}
                                 maxLength="30"
                                 minLength="2"
                             />
@@ -60,7 +60,7 @@ function Profile({loggedIn, userData, onProfileChange, onLogout }) {
                                 type="email"
                                 name="email"
                                 onChange={handleChangeEmail}
-                                value={userData.email || ''}
+                                defaultValue={userData.email || ''}
                                 placeholder="Ваш е-mail"
                                 maxLength="30"
                                 minLength="8"
