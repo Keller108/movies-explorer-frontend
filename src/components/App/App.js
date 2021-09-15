@@ -19,6 +19,7 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [userData, setUserData] = useState({});
   const [currentUser, setCurrentUser] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
   const [cards, setCards] = useState([]);
 
   const history = useHistory(); 
@@ -130,6 +131,7 @@ function App() {
                     component={Movies}
                     loggedIn={loggedIn}
                     cards={cards}
+                    isLoading={isLoading}
                   />
                   <ProtectedRoute 
                     exact path="/saved-movies"
