@@ -10,9 +10,8 @@ import Register from '../Register/Register';
 import Login from '../Login/Login';
 import NotFound from '../NotFound/NotFound';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import * as mainApi from '../../utils/MainApi';
 import * as moviesApi from '../../utils/MoviesApi';
-import * as api from '../../utils/MainApi';
-import * as auth from '../../utils/auth';
 
 function App() {
 
@@ -37,7 +36,7 @@ function App() {
 
   useEffect(() => {
     if (loggedIn) { 
-        api.getInfo()
+      mainApi.getInfo()
         .then((data) => {
             setCurrentUser(data)
             history.push('/');
@@ -54,7 +53,7 @@ function App() {
         const result = JSON.parse(movies);
         setCards(result);
       }
-      auth.getContent(jwt)
+      mainApi.getContent(jwt)
       .then((res) => {
           if (res) {
             setUserData({
@@ -75,7 +74,7 @@ function App() {
   };
 
   function handleRegister ({name, email, password}) {
-    return auth.register(name, email, password)
+    return mainApi.register(name, email, password)
     .then((res) => {
         if (res) {
             history.push('/signin')
@@ -89,7 +88,7 @@ function App() {
   };
 
   function handleLogin ({email, password}) {
-    return auth
+    return mainApi
     .authorize(email, password)
     .then((res) => {
         if (res.token) {
@@ -102,7 +101,7 @@ function App() {
   };
 
   function handleUpdateUser(userData) {
-    api.updateInfo(userData)
+    mainApi.updateInfo(userData)
     .then((data) => {
         setCurrentUser(data)
         history.push('/')
