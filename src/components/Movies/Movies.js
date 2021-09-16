@@ -5,7 +5,7 @@ import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Footer from '../Footer/Footer';
 
-function Movies({loggedIn, cards}) {
+function Movies({loggedIn, cards, onMoviesSearch}) {
     return (
         <>
             <Header 
@@ -14,7 +14,9 @@ function Movies({loggedIn, cards}) {
                 isMoviesActive={false}
                 loggedIn={loggedIn}
             />
-            <SearchForm />
+            <SearchForm
+            onMoviesSearch={onMoviesSearch}
+            />
             <MoviesCardList 
                 cards={cards}
             />

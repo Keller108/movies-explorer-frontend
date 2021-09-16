@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
+import { Route, Switch, Redirect, useHistory, useLocation } from 'react-router-dom';
 import './App.css';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import Main from '../Main/Main';
@@ -21,33 +21,52 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [cards, setCards] = useState([]);
+  const [isNotFound, setIsNotFound] = useState(false);
 
+  const pathname = useLocation();
   const history = useHistory(); 
 
   useEffect(() => {
     tokenCheck()
   }, []);
 
+  // useEffect(() => {
+  //   if (loggedIn === true) {
+  //       moviesApi.getMovies() 
+  //       .then((data) => {
+  //           setCards(data)
+  //           console.log(data)
+  //       })         
+  //       .catch(err => console.log(err)) 
+  //   }
+      
+  // }, [loggedIn])
+ 
   function tokenCheck() {
     const jwt = localStorage.getItem('jwt')
+    const movies = localStorage.getItem('movies')
     if (jwt) {
-        auth.getContent(jwt)
-        .then((res) => {
-            if (res) {
-              setUserData({
-                name: res.name,
-                email: res.email,
-              })
-              history.push('/')
-              setLoggedIn(true)
-            } else {
-                localStorage.removeItem('jwt')
-            }
-        })
-        .catch(err => { 
-            console.log(err);
-            history.push('/signin');
-        })
+      if (movies) {
+        const result = JSON.parse(movies);
+        setCards(result);
+      }
+      auth.getContent(jwt)
+      .then((res) => {
+          if (res) {
+            setUserData({
+              name: res.name,
+              email: res.email,
+            })
+            history.push(pathname.pathname)
+            setLoggedIn(true)
+          } else {
+              localStorage.removeItem('jwt')
+          }
+      })
+      .catch(err => { 
+          console.log(err);
+          history.push('/signin');
+      })
     }
   };
 
@@ -60,19 +79,7 @@ function App() {
         })
         .catch(err => console.log(err))
     }
-  }, [loggedIn])
-
-  useEffect(() => {
-    if (loggedIn === true) {
-        moviesApi.getMovies() 
-        .then((data) => {
-            setCards(data)
-            console.log(data)
-        })         
-        .catch(err => console.log(err)) 
-    }
-      
-  }, [loggedIn])
+  }, [loggedIn]);
 
   function handleRegister ({name, email, password}) {
     return auth.register(name, email, password)
@@ -112,9 +119,49 @@ function App() {
 
   function signOut() {
       localStorage.removeItem('jwt')
+      localStorage.removeItem('movies')
       setLoggedIn(false)
+      setCards([]);
       history.push('/')
   };
+
+  function handleSearchMovies(searchText) {
+    setIsLoading(true)
+    if (cards.length > 0) {
+      const resMov = goSearch(cards, searchText)
+      if (resMov.length > 0) {
+        setIsNotFound(false)
+      } else {
+        setIsNotFound(true)
+      }
+    } else {
+      moviesApi.getMovies()
+      .then((data) => {
+        setCards(data)
+        localStorage.setItem('movies', JSON.stringify(data));
+        const result = goSearch(data, searchText);
+          if (result.length > 0) {
+              setIsNotFound(false);
+          }
+          else {
+            setIsNotFound(true);
+          }
+      })
+    }
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  }
+
+  function goSearch(list, searchText) {
+    let result = [];
+    list.forEach((movie) => {
+      if(movie.nameRU.toLowerCase().indexOf(searchText.toLowerCase()) > -1) {
+        result.push(movie)
+      }
+    })
+    return result;
+  }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -132,6 +179,7 @@ function App() {
                     loggedIn={loggedIn}
                     cards={cards}
                     isLoading={isLoading}
+                    onMoviesSearch={handleSearchMovies}
                   />
                   <ProtectedRoute 
                     exact path="/saved-movies"
