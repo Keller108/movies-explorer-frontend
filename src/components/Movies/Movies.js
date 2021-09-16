@@ -5,7 +5,12 @@ import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Footer from '../Footer/Footer';
 
-function Movies({loggedIn, cards, onMoviesSearch, isLoading}) {
+function Movies({loggedIn, cards, isFilteredCards, onMoviesSearch, isLoading, setFilter}) {
+
+    function filterChange() {
+        setFilter();
+    }
+
     return (
         <>
             <Header 
@@ -16,6 +21,8 @@ function Movies({loggedIn, cards, onMoviesSearch, isLoading}) {
             />
             <SearchForm
                 onMoviesSearch={onMoviesSearch}
+                isFilteredCards={isFilteredCards}
+                onFilterChange={filterChange}
             />
             <MoviesCardList 
                 cards={cards}

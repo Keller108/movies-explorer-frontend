@@ -1,13 +1,13 @@
 import React from 'react';
 import './Filter.css';
 
-function Filter({isOff}) {
+function Filter({isFilteredCards}) {
     return (
         <span 
-            className={isOff ? `filter-btn` : `filter-btn filter-btn_hidden`}
+            className={isFilteredCards ? `filter-btn` : `filter-btn filter-btn_hidden`}
         >
             <span 
-                className={isOff ? 
+                className={isFilteredCards ? 
                     `filter-btn__circle` 
                     : `filter-btn__circle filter-btn__circle_hidden`}
             />

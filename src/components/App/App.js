@@ -21,6 +21,9 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [cards, setCards] = useState([]);
+  const [isFilteredCards, setIsFilteredCards] = useState(false);
+  const [filteredCards, setFilteredCards] = useState([]);
+  const [filteredShortTimeCards, setFilteredShortTimeCards] = useState([]);
   const [isNotFound, setIsNotFound] = useState(false);
 
   const pathname = useLocation();
@@ -122,18 +125,20 @@ function App() {
       localStorage.removeItem('movies')
       setLoggedIn(false)
       setCards([]);
+      setFilteredCards([]);
       history.push('/')
   };
 
   function handleSearchMovies(searchText) {
     setIsLoading(true)
     if (cards.length > 0) {
-      const resMov = goSearch(cards, searchText)
-      if (resMov.length > 0) {
+      const result = goSearch(cards, searchText)
+      if (result.length > 0) {
         setIsNotFound(false)
       } else {
         setIsNotFound(true)
       }
+      setFilteredCards(result);
     } else {
       moviesApi.getMovies()
       .then((data) => {
@@ -146,6 +151,7 @@ function App() {
           else {
             setIsNotFound(true);
           }
+          setFilteredCards(result);
       })
     }
     setTimeout(() => {
@@ -156,13 +162,17 @@ function App() {
   function goSearch(list, searchText) {
     let result = [];
     list.forEach((movie) => {
-      if(movie.nameRU.toLowerCase().indexOf(searchText.toLowerCase()) > -1) {
-        result.push(movie)
-      }
+        if (movie.nameRU.toLowerCase().indexOf(searchText.toLowerCase()) > -1) {
+            result.push(movie);
+        }
     })
     return result;
   }
 
+  function switchFilter() {
+    setIsFilteredCards(!isFilteredCards)
+  }
+ 
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="App">
@@ -177,9 +187,11 @@ function App() {
                     exact path="/movies"
                     component={Movies}
                     loggedIn={loggedIn}
-                    cards={cards}
+                    isFilteredCards={isFilteredCards}
+                    cards={isFilteredCards ? filteredShortTimeCards : filteredCards}
                     isLoading={isLoading}
                     onMoviesSearch={handleSearchMovies}
+                    setFilter={switchFilter}
                   />
                   <ProtectedRoute 
                     exact path="/saved-movies"

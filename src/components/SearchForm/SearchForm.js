@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './SearchForm.css';
 import FilterBtn from '../FilterBtn/FilterBtn';
 
-function SearchForm({onMoviesSearch}) {
+function SearchForm({onMoviesSearch, isFilteredCards, onFilterChange}) {
     
     const [textInput, setTextInput] = useState('');
 
@@ -35,7 +35,10 @@ function SearchForm({onMoviesSearch}) {
                     Найти
                 </button>
             </form>
-            <FilterBtn />
+            <FilterBtn 
+                isFilteredCards={isFilteredCards}
+                onFilterChange={onFilterChange}
+            />
         </section>
     )
 };
