@@ -3,13 +3,13 @@ import './MoviesCardList.css';
 import Preloader from '../Preloader/Preloader';
 import Movie from '../Movie/Movie';
 
-function MoviesCardList({cards, isLoading}) {
+function MoviesCardList({cards, isLoading, isNotFound}) {
     return (
         <section className="movies-card-section">
             <Preloader 
                 isLoading={isLoading}
             />
-            <p className="movies-card-section__text-not-found movies-card-section__text-not-found_hidden">
+            <p className={isNotFound ? `movies-card-section__text-not-found` : `movies-card-section__text-not-found movies-card-section__text-not-found_hidden`}>
                 По вашему запросу ничего не найдено.
             </p>
             <ul className="movies-card-list">

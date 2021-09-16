@@ -28,23 +28,24 @@ function App() {
 
   const pathname = useLocation();
   const history = useHistory(); 
+ 
+  // КЛИЕНТСКАЯ ЧАСТЬ //
 
   useEffect(() => {
     tokenCheck()
   }, []);
 
-  // useEffect(() => {
-  //   if (loggedIn === true) {
-  //       moviesApi.getMovies() 
-  //       .then((data) => {
-  //           setCards(data)
-  //           console.log(data)
-  //       })         
-  //       .catch(err => console.log(err)) 
-  //   }
-      
-  // }, [loggedIn])
- 
+  useEffect(() => {
+    if (loggedIn) { 
+        api.getInfo()
+        .then((data) => {
+            setCurrentUser(data)
+            history.push('/');
+        })
+        .catch(err => console.log(err))
+    }
+  }, [loggedIn]);
+
   function tokenCheck() {
     const jwt = localStorage.getItem('jwt')
     const movies = localStorage.getItem('movies')
@@ -72,17 +73,6 @@ function App() {
       })
     }
   };
-
-  useEffect(() => {
-    if (loggedIn) { 
-        api.getInfo()
-        .then((data) => {
-            setCurrentUser(data)
-            history.push('/');
-        })
-        .catch(err => console.log(err))
-    }
-  }, [loggedIn]);
 
   function handleRegister ({name, email, password}) {
     return auth.register(name, email, password)
@@ -130,6 +120,8 @@ function App() {
       history.push('/')
   };
 
+  // ПОИСК ФИЛЬМОВ //
+
   function handleSearchMovies(searchText) {
     setIsLoading(true)
     if (cards.length > 0) {
@@ -169,6 +161,8 @@ function App() {
     }, 1000);
   }
 
+  // РЕАЛИЗАЦИЯ ФИЛЬТРОВ //
+
   function goSearch(list, searchText) {
     let result = [];
     list.forEach((movie) => {
@@ -179,10 +173,6 @@ function App() {
     return result;
   }
 
-  function switchFilter() {
-    setIsFilteredCards(!isFilteredCards)
-  }
-
   function searchFilterTime(list) {
     let result = [];
     list.forEach((card) => {
@@ -191,6 +181,10 @@ function App() {
         }
     })
     return result;
+  }
+
+  function switchFilter() {
+    setIsFilteredCards(!isFilteredCards)
   }
 
   useEffect(() => {
@@ -230,6 +224,7 @@ function App() {
                     isLoading={isLoading}
                     onMoviesSearch={handleSearchMovies}
                     setFilter={switchFilter}
+                    isNotFound={isNotFound}
                   />
                   <ProtectedRoute 
                     exact path="/saved-movies"

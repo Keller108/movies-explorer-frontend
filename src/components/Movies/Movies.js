@@ -5,7 +5,7 @@ import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Footer from '../Footer/Footer';
 
-function Movies({loggedIn, cards, isFilteredCards, onMoviesSearch, isLoading, setFilter}) {
+function Movies({loggedIn, isNotFound, cards, isFilteredCards, onMoviesSearch, isLoading, setFilter}) {
 
     function filterChange() {
         setFilter();
@@ -27,6 +27,7 @@ function Movies({loggedIn, cards, isFilteredCards, onMoviesSearch, isLoading, se
             <MoviesCardList 
                 cards={cards}
                 isLoading={isLoading}
+                isNotFound={isNotFound}
             />
             <Footer />
         </>
