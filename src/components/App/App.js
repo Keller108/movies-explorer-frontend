@@ -126,6 +126,7 @@ function App() {
       setLoggedIn(false)
       setCards([]);
       setFilteredCards([]);
+      setFilteredShortTimeCards([]);
       history.push('/')
   };
 
@@ -152,6 +153,15 @@ function App() {
             setIsNotFound(true);
           }
           setFilteredCards(result);
+          if (isFilteredCards) {
+            const resultShortTimeFilter = searchFilterTime(result);
+            if (resultShortTimeFilter.length > 0) {
+              setIsNotFound(false);
+            } else {
+              setIsNotFound(true);
+            }
+          setFilteredShortTimeCards(result);
+          }
       })
     }
     setTimeout(() => {
@@ -172,6 +182,34 @@ function App() {
   function switchFilter() {
     setIsFilteredCards(!isFilteredCards)
   }
+
+  function searchFilterTime(list) {
+    let result = [];
+    list.forEach((card) => {
+        if (card.duration <= 40) {
+            result.push(card);
+        }
+    })
+    return result;
+  }
+
+  useEffect(() => {
+    setIsNotFound(false);
+    if (isFilteredCards) {
+        if (pathname.pathname === "/movies") {
+            if (cards.length > 0) {
+                const result = searchFilterTime(filteredCards);
+                if (result.length > 0) {
+                    setIsNotFound(false);
+                }
+                else {
+                    setIsNotFound(true);
+                }
+                setFilteredShortTimeCards(result);
+            }
+        }
+    }
+  }, [isFilteredCards])
  
   return (
     <CurrentUserContext.Provider value={currentUser}>

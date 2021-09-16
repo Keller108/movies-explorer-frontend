@@ -8,7 +8,7 @@ function Movie ({card}) {
 
     return (
         <li className="movies-card-item">
-            <a target="_blank" href={card.trailerLink} rel="noreferrer">
+            <a className="movies-card-item__link" target="_blank" href={card.trailerLink} rel="noreferrer">
                 <img className="movies-card-item__img" alt={`Стоп-кадр из фильма ${card.nameRU}`} src={`https://api.nomoreparties.co${card.image.url}`}/>
             </a>
             <div className="movies-card-item__title-wrapper">
