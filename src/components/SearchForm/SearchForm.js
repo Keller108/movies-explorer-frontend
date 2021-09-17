@@ -24,7 +24,7 @@ function SearchForm({isSaved, onMoviesSearch, onSavedMoviesSearch, isFilteredCar
 
     return (
         <section className="search-form-section">
-            <form className="search-form" onSubmit={isSaved ? handleSearchMovies : handleSearchSavedMovies}>
+            <form className="search-form" onSubmit={isSaved ? handleSearchSavedMovies : handleSearchMovies}>
                 <input 
                     className="search-form__input"
                     placeholder="Фильм"
