@@ -55,7 +55,11 @@ function Movie ({card, isSaved, savedMovies, saveMovieToBundle, deleteMovieFromB
                 <p className="movies-card-item__title">
                     {card.nameRU}
                 </p>
-                <LikeBtn />
+                <LikeBtn 
+                    isLike={isLike}
+                    handleLikeMovie={handleLikeMovie}
+                    handleDeleteMovie={handleDeleteMovie}
+                />
             </div>
             <p className="movies-card-item__duration">
                 {durationMovie}
