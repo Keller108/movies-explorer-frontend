@@ -53,8 +53,12 @@
     transition: all .3s;
 }
 
-.movies-card-item__more-btn {
+.movies-card-item__more-btn:hover {
     opacity: .8;
+}
+
+.movies-card-item__more-btn_disabled {
+    display: none;
 }
 
 @media (max-width: 1180px) {

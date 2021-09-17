@@ -63,3 +63,47 @@ export const updateInfo = (userData) => {
     return fetch(`${baseUrl}/users/me`, dataObject)
         .then(handleResponse)
 }
+
+export const saveMovie = ({movie}) => {
+    return fetch(`${baseUrl}/movies`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+        },
+        body: JSON.stringify({
+            country: movie.country,
+            director: movie.director,
+            duration: movie.duration,
+            year: movie.year,
+            description: movie.description,
+            image: movie.image,
+            trailer: movie.trailer,
+            thumbnail: movie.thumbnail,
+            movieId: String(movie.movieId),
+            nameRU: movie.nameRU,
+            nameEN: movie.nameEN,
+        })
+        .then(handleResponse)
+    })
+};
+
+export const deleteMovie = ({id}) => {
+  return fetch(`${baseUrl}/movies/${id}`, {
+    method: 'DELETE',
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('jwt')}`
+    }
+  }).then(handleResponse);
+};
+
+export const getSavedMovies = () => {
+  return fetch(`${baseUrl}/movies`, {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('jwt')}`
+    }
+  }).then(handleResponse);
+}

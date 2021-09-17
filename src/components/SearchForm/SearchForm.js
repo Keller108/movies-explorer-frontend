@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './SearchForm.css';
 import FilterBtn from '../FilterBtn/FilterBtn';
 
-function SearchForm({onMoviesSearch, isFilteredCards, onFilterChange}) {
+function SearchForm({isSaved, onMoviesSearch, onSavedMoviesSearch, isFilteredCards, onFilterChange}) {
     
     const [textInput, setTextInput] = useState('');
 
@@ -10,14 +10,21 @@ function SearchForm({onMoviesSearch, isFilteredCards, onFilterChange}) {
         setTextInput(e.target.value);
     }
 
-    function handleSearchForm(e) {
+    function handleSearchMovies(e) {
         e.preventDefault();
         onMoviesSearch(textInput);
         console.log(e)
     }
+
+    function handleSearchSavedMovies(e) {
+        e.preventDefault();
+        onSavedMoviesSearch(textInput);
+        console.log(e)
+    }
+
     return (
         <section className="search-form-section">
-            <form className="search-form" onSubmit={handleSearchForm}>
+            <form className="search-form" onSubmit={isSaved ? handleSearchMovies : handleSearchSavedMovies}>
                 <input 
                     className="search-form__input"
                     placeholder="Фильм"

@@ -20,9 +20,12 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [cards, setCards] = useState([]);
+  const [savedCards, setSavedCards] = useState([]);
   const [isFilteredCards, setIsFilteredCards] = useState(false);
   const [filteredCards, setFilteredCards] = useState([]);
   const [filteredShortTimeCards, setFilteredShortTimeCards] = useState([]);
+  const [savedFilteredCards, setSavedFilteredCards] = useState([]);
+  const [savedFilteredShortTimeCards, setSavedFilteredShortTimeCards] = useState([]);
   const [isNotFound, setIsNotFound] = useState(false);
 
   const pathname = useLocation();
@@ -69,8 +72,15 @@ function App() {
       .catch(err => { 
           console.log(err);
           history.push('/signin');
-      })
-    }
+      });
+      mainApi.getSavedMovies()
+        .then((movies) => {
+          setSavedCards(movies);
+          setSavedFilteredCards(movies);
+          localStorage.setItem('savedMovies', JSON.stringify(movies));
+        })
+        .catch(err => console.log(err));
+    };
   };
 
   function handleRegister ({name, email, password}) {
@@ -82,9 +92,7 @@ function App() {
             Promise.reject(`Ошибка ${res.status}`)
         }
     })
-    .catch((err) => {
-        console.log(err)
-    })
+    .catch(err => console.log(err));
   };
 
   function handleLogin ({email, password}) {
@@ -110,21 +118,25 @@ function App() {
   }
 
   function signOut() {
-      localStorage.removeItem('jwt')
-      localStorage.removeItem('movies')
-      setLoggedIn(false)
+      localStorage.removeItem('jwt');
+      localStorage.removeItem('movies');
+      localStorage.removeItem('savedMovies')
+      setLoggedIn(false);
       setCards([]);
+      setSavedCards([]);
       setFilteredCards([]);
+      setSavedFilteredCards([]);
       setFilteredShortTimeCards([]);
-      history.push('/')
+      setSavedFilteredShortTimeCards([]);
+      history.push('/');
   };
 
   // ПОИСК ФИЛЬМОВ //
 
-  function handleSearchMovies(searchText) {
+  function handleSearchMovies(value) {
     setIsLoading(true)
     if (cards.length > 0) {
-      const result = goSearch(cards, searchText)
+      const result = goSearch(cards, value)
       if (result.length > 0) {
         setIsNotFound(false)
       } else {
@@ -136,11 +148,10 @@ function App() {
       .then((data) => {
         setCards(data)
         localStorage.setItem('movies', JSON.stringify(data));
-        const result = goSearch(data, searchText);
+        const result = goSearch(data, value);
           if (result.length > 0) {
               setIsNotFound(false);
-          }
-          else {
+          } else {
             setIsNotFound(true);
           }
           setFilteredCards(result);
@@ -151,26 +162,97 @@ function App() {
             } else {
               setIsNotFound(true);
             }
-          setFilteredShortTimeCards(result);
+            setFilteredShortTimeCards(resultShortTimeFilter);
           }
       })
+      .catch(err => console.log(err));
     }
+    
     setTimeout(() => {
       setIsLoading(false);
-    }, 1000);
+    }, 900);
   }
 
-  // РЕАЛИЗАЦИЯ ФИЛЬТРОВ //
+  // СОХРАНЕНИЕ ФИЛЬМОВ //
 
+  function saveMovieToBundle(movie) {
+    setIsLoading(true);
+    mainApi.saveMovie({movie})
+      .then((res) => {
+        const movies = [...savedCards, res];
+        localStorage.setItem('savedMovies', JSON.stringify(movies));
+        setSavedCards(other => [...other, res]);
+        if (isFilteredCards) {
+          setSavedFilteredCards(other => [...other, res]);
+          setSavedFilteredShortTimeCards(other => [...other, res]);
+        } else {
+          setSavedFilteredCards(other => [...other, res]);
+        }
+      })
+      .catch(err => console.log(err));
+
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 900);
+  };
+
+  // ПОИСК СОХРАНЕННЫХ ФИЛЬМОВ //
+
+  function searchSavedToBundleMovies(value) {
+    if (savedCards.length > 0) {
+      setSavedFilteredCards(goSearch(savedCards, value));
+    } else {
+      setIsLoading(true);
+      mainApi.getSavedMovies()
+        .then((res) => {
+          setSavedCards(res);
+          localStorage.setItem('savedMovies', JSON.stringify(res));
+          setSavedFilteredCards(goSearch(savedCards, value));
+        })
+        .catch(err => console.log(err));
+
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 900);  
+    };
+  };
+
+  // ФИЛЬТРАЦИЯ ФИЛЬМОВ // 
+
+  function filterMoviesById(moviesList, id) {
+    return moviesList.filter((movie) => { return movie._id !== id});
+  };
+
+  // УДАЛЕНИЕ ФИЛЬМОВ //
+
+  function deleteMovieFromBundle(id) {
+    setIsLoading(true);
+    mainApi.deleteMovie({id})
+      .then(() => {
+        const result = filterMoviesById(savedCards, id);
+        setSavedCards(result);
+        localStorage.setItem('savedMovies', JSON.stringify(result));
+        setSavedFilteredShortTimeCards(filterMoviesById(savedFilteredShortTimeCards, id));
+        setSavedFilteredCards(filterMoviesById(savedFilteredCards, id));
+      })
+      .catch(err => console.log(err));
+
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 900);
+  };
+
+  // ФИЛЬТРОВАНИЕ КАРТОЧЕК (ПО ВРЕМЕНИ И Т.Д.) //
+  
   function goSearch(list, searchText) {
     let result = [];
     list.forEach((movie) => {
         if (movie.nameRU.toLowerCase().indexOf(searchText.toLowerCase()) > -1) {
             result.push(movie);
         }
-    })
+    });
     return result;
-  }
+  };
 
   function searchFilterTime(list) {
     let result = [];
@@ -178,13 +260,13 @@ function App() {
         if (card.duration <= 40) {
             result.push(card);
         }
-    })
+    });
     return result;
-  }
+  };
 
   function switchFilter() {
     setIsFilteredCards(!isFilteredCards)
-  }
+  };
 
   useEffect(() => {
     setIsNotFound(false);
@@ -220,15 +302,29 @@ function App() {
                     loggedIn={loggedIn}
                     isFilteredCards={isFilteredCards}
                     cards={isFilteredCards ? filteredShortTimeCards : filteredCards}
+                    savedMovies={savedCards}
                     isLoading={isLoading}
                     onMoviesSearch={handleSearchMovies}
                     setFilter={switchFilter}
                     isNotFound={isNotFound}
+                    saveMovieToBundle={saveMovieToBundle}
+                    deleteMovieFromBundle={deleteMovieFromBundle}
+                    onSavedMoviesSearch={searchSavedToBundleMovies}
                   />
                   <ProtectedRoute 
                     exact path="/saved-movies"
                     component={SavedMovies}
                     loggedIn={loggedIn}
+                    isFilteredCards={isFilteredCards}
+                    cards={isFilteredCards ? savedFilteredShortTimeCards : savedFilteredCards}
+                    savedMovies={savedCards}
+                    isLoading={isLoading}
+                    onMoviesSearch={handleSearchMovies}
+                    setFilter={switchFilter}
+                    isNotFound={isNotFound}
+                    saveMovieToBundle={saveMovieToBundle}
+                    deleteMovieFromBundle={deleteMovieFromBundle}
+                    onSavedMoviesSearch={searchSavedToBundleMovies}
                   />
                   <ProtectedRoute 
                     exact path="/profile"
