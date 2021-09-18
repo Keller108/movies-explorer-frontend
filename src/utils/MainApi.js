@@ -1,6 +1,6 @@
 export const baseUrl = 'https://api.movies108.nomoredomains.monster';
 
-const handleResponse = res => res.ok ? res.json() : Promise.reject(`Ошибка ${res.status}`)
+const handleResponse = (res) => res.ok ? res.json() : Promise.reject(`Ошибка ${res.status}`);
 
 export const register = (name, email, password) => {
     return fetch(`${baseUrl}/signup`, {
@@ -72,23 +72,23 @@ export const saveMovie = ({movie}) => {
           'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
         },
         body: JSON.stringify({
-            country: movie.country,
-            director: movie.director,
-            duration: movie.duration,
-            year: movie.year,
-            description: movie.description,
-            image: movie.image,
-            trailer: movie.trailer,
-            thumbnail: movie.thumbnail,
-            movieId: String(movie.movieId),
-            nameRU: movie.nameRU,
-            nameEN: movie.nameEN,
-        })
-        .then(handleResponse)
+          country: movie.country,
+          director: movie.director,
+          duration: movie.duration,
+          year: movie.year,
+          description: movie.description,
+          image: movie.image,
+          trailer: movie.trailer,
+          thumbnail: movie.thumbnail,
+          movieId: movie.movieId,
+          nameRU: movie.nameRU,
+          nameEN: movie.nameEN,
+        }),
     })
+    .then(handleResponse);
 };
 
-export const deleteMovie = ({id}) => {
+export const deleteMovie = (id) => {
   return fetch(`${baseUrl}/movies/${id}`, {
     method: 'DELETE',
     headers: {

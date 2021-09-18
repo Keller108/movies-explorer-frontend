@@ -49,12 +49,18 @@ function App() {
   }, [loggedIn]);
 
   function tokenCheck() {
-    const jwt = localStorage.getItem('jwt')
-    const movies = localStorage.getItem('movies')
+    const jwt = localStorage.getItem('jwt');
+    const movies = localStorage.getItem('movies');
+    const savedMovies = localStorage.getItem('savedMovies');
     if (jwt) {
       if (movies) {
         const result = JSON.parse(movies);
         setCards(result);
+      }
+      if (savedMovies) {
+        const savedResult = JSON.parse(savedMovies);
+        setSavedCards(savedResult);
+        setSavedFilteredCards(savedResult);
       }
       mainApi.getContent(jwt)
       .then((res) => {
@@ -80,7 +86,7 @@ function App() {
           localStorage.setItem('savedMovies', JSON.stringify(movies));
         })
         .catch(err => console.log(err));
-    };
+    };  
   };
 
   function handleRegister ({name, email, password}) {
@@ -96,16 +102,15 @@ function App() {
   };
 
   function handleLogin ({email, password}) {
-    return mainApi
-    .authorize(email, password)
-    .then((res) => {
+    return mainApi.authorize(email, password)
+      .then((res) => {
         if (res.token) {
-            localStorage.setItem('jwt', res.token)
-            setLoggedIn(true)
-            tokenCheck()
-        }            
+            localStorage.setItem('jwt', res.token);
+            setLoggedIn(true);
+            tokenCheck();
+      }            
     })
-    .catch(err => console.log(err))
+    .catch(err => console.log(err));
   };
 
   function handleUpdateUser(userData) {
@@ -176,17 +181,18 @@ function App() {
   // СОХРАНЕНИЕ ФИЛЬМОВ //
 
   function saveMovieToBundle(movie) {
+    console.log(movie)
     setIsLoading(true);
-    mainApi.saveMovie({movie})
-      .then((res) => {
-        const movies = [...savedCards, res];
-        localStorage.setItem('savedMovies', JSON.stringify(movies));
-        setSavedCards(other => [...other, res]);
-        if (isFilteredCards) {
-          setSavedFilteredCards(other => [...other, res]);
-          setSavedFilteredShortTimeCards(other => [...other, res]);
-        } else {
-          setSavedFilteredCards(other => [...other, res]);
+      mainApi.saveMovie({movie})
+        .then((res) => {
+          const movies = [...savedCards, res];
+          localStorage.setItem('savedMovies', JSON.stringify(movies));
+          setSavedCards(i => [...i, res]);
+          if (isFilteredCards) {
+              setSavedFilteredCards(i => [...i, res]);
+              setSavedFilteredShortTimeCards(i => [...i, res]);
+          } else {
+            setSavedFilteredCards(i => [...i, res]);
         }
       })
       .catch(err => console.log(err));
@@ -225,9 +231,9 @@ function App() {
 
   // УДАЛЕНИЕ ФИЛЬМОВ //
 
-  function deleteMovieFromBundle(id) {
+  function deleteMovieFromBundle({id}) {
     setIsLoading(true);
-    mainApi.deleteMovie({id})
+    mainApi.deleteMovie(id)
       .then(() => {
         const result = filterMoviesById(savedCards, id);
         setSavedCards(result);
@@ -283,8 +289,17 @@ function App() {
                 setFilteredShortTimeCards(result);
             }
         }
-    }
-  }, [isFilteredCards])
+    } else if (pathname.pathname === "/saved-movies") {
+        const result = searchFilterTime(savedFilteredCards);
+        if (result.length > 0) {
+            setIsNotFound(false);
+        }
+        else {
+            setIsNotFound(true);
+        }
+        setSavedFilteredShortTimeCards(result);
+      }
+  }, [isFilteredCards]);
  
   return (
     <CurrentUserContext.Provider value={currentUser}>
