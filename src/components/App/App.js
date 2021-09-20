@@ -232,6 +232,7 @@ function App() {
   // УДАЛЕНИЕ ФИЛЬМОВ //
 
   function deleteMovieFromBundle(id) {
+    console.log(id)
     setIsLoading(true);
     mainApi.deleteMovie({id})
       .then(() => {

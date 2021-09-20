@@ -20,14 +20,12 @@ function Movie ({card, isSaved, savedMovies, saveMovieToBundle, deleteMovieFromB
         thumbnail: isSaved ? card.thumbnail : `https://api.nomoreparties.co${card.image.formats.thumbnail.url}`,
         movieId: isSaved ? card._id : card.id,
         nameRU: card.nameRU,
-        nameEN: card.nameEN,
+        nameEN: card.nameEN || 'Нет',
     };
 
     function handleLikeMovie(e) {
         if (isLike) {
-            const searchMovie = savedMovies.find(item => item.movieId === card._id);
-            deleteMovieFromBundle(searchMovie._id)
-            console.log(searchMovie);
+            deleteMovieFromBundle(card._id)
         } else {
             saveMovieToBundle(movie);
         }
@@ -58,8 +56,7 @@ function Movie ({card, isSaved, savedMovies, saveMovieToBundle, deleteMovieFromB
                 </p>
                 <LikeBtn 
                     isLike={isLike}
-                    isSaved={isSaved}
-                    onClick={isSaved ? handleDeleteMovie : handleLikeMovie}
+                    onMovieLike={isLike ? handleDeleteMovie : handleLikeMovie}
                 />
             </div>
             <p className="movies-card-item__duration">
