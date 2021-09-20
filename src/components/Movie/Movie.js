@@ -25,8 +25,9 @@ function Movie ({card, isSaved, savedMovies, saveMovieToBundle, deleteMovieFromB
 
     function handleLikeMovie(e) {
         if (isLike) {
-            const searchMovie = savedMovies.find(item => item.movieId === card.id);
+            const searchMovie = savedMovies.find(item => item.movieId === card._id);
             deleteMovieFromBundle(searchMovie._id)
+            console.log(searchMovie);
         } else {
             saveMovieToBundle(movie);
         }
@@ -47,8 +48,8 @@ function Movie ({card, isSaved, savedMovies, saveMovieToBundle, deleteMovieFromB
 
     return (
         <li className="movies-card-item" id={isSaved ? card._id : card.id}>
-            <a className="movies-card-item__link" target="_blank" href={card.trailerLink} rel="noreferrer">
-                <img className="movies-card-item__img" alt={`Стоп-кадр из фильма ${card.nameRU}`} src={`https://api.nomoreparties.co${card.image.url}`}/>
+            <a className="movies-card-item__link" target="_blank" href={isSaved ? card.trailer : card.trailerLink} rel="noreferrer">
+                <img className="movies-card-item__img" alt={`Стоп-кадр из фильма ${card.nameRU}`} src={isSaved ? card.image : `https://api.nomoreparties.co${card.image.url}`}/>
             </a>
             <div className="movies-card-item__title-wrapper">
                 <p className="movies-card-item__title">

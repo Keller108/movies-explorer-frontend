@@ -231,9 +231,9 @@ function App() {
 
   // УДАЛЕНИЕ ФИЛЬМОВ //
 
-  function deleteMovieFromBundle({id}) {
+  function deleteMovieFromBundle(id) {
     setIsLoading(true);
-    mainApi.deleteMovie(id)
+    mainApi.deleteMovie({id})
       .then(() => {
         const result = filterMoviesById(savedCards, id);
         setSavedCards(result);
