@@ -13,13 +13,11 @@ function SearchForm({isSaved, onMoviesSearch, onSavedMoviesSearch, isFilteredCar
     function handleSearchMovies(e) {
         e.preventDefault();
         onMoviesSearch(textInput);
-        console.log(e)
     }
 
     function handleSearchSavedMovies(e) {
         e.preventDefault();
         onSavedMoviesSearch(textInput);
-        console.log(e)
     }
 
     return (

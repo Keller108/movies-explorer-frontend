@@ -3,7 +3,7 @@ import './MoviesCardList.css';
 import Preloader from '../Preloader/Preloader';
 import Movie from '../Movie/Movie';
 
-function MoviesCardList({cards, savedMovies, isLoading, isSaved, isNotFound, saveMovieToBundle, deleteMovieFromBundle, isBtnDisabled}) {
+function MoviesCardList({cards, savedCards, isLoading, isSaved, isNotFound, saveMovieToBundle, deleteMovieFromBundle, isBtnDisabled}) {
     return (
         <section className="movies-card-section">
             <Preloader 
@@ -16,7 +16,7 @@ function MoviesCardList({cards, savedMovies, isLoading, isSaved, isNotFound, sav
                 {cards.map((card) => ( 
                     <Movie 
                         card={card}
-                        savedMovies={savedMovies}
+                        savedCards={savedCards}
                         key={isSaved ? card.movieId : card.id}
                         isSaved={isSaved}
                         saveMovieToBundle={saveMovieToBundle}

@@ -3,38 +3,40 @@ import './Movie.css';
 import LikeBtn from '../LikeBtn/LikeBtn';
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 
-function Movie ({card, isSaved, savedMovies, saveMovieToBundle, deleteMovieFromBundle}) {
+function Movie ({card, isSaved, savedCards, saveMovieToBundle, deleteMovieFromBundle}) {
 
     const [isLike, setIsLike] = useState(false);
     const currentUser = useContext(CurrentUserContext);
-    const savingMovie = savedMovies.find((item) => item.nameRU === card.nameRU && item.owner === currentUser._id);
+    const savingMovie = savedCards.find((item) => item.nameRU === card.nameRU && item.owner === currentUser._id);
 
     const movie = {
-        country: card.country,
-        director: card.director,    
-        duration: card.duration,
-        year: card.year,
-        description: card.description,
+        country: card.country || 'Нет',
+        director: card.director || 'Нет',    
+        duration: card.duration || 0,
+        year: card.year || 'Нет',
+        description: card.description || 'Нет',
         image: isSaved ? card.image.url : `https://api.nomoreparties.co${card.image.url}`,
         trailer: isSaved ? card.trailer : card.trailerLink,
         thumbnail: isSaved ? card.thumbnail : `https://api.nomoreparties.co${card.image.formats.thumbnail.url}`,
         movieId: isSaved ? card._id : card.id,
-        nameRU: card.nameRU,
+        nameRU: card.nameRU || 'Нет',
         nameEN: card.nameEN || 'Нет',
     };
 
     function handleLikeMovie(e) {
         if (isLike) {
-            deleteMovieFromBundle(card._id)
-        } else {
+            const moviesForSearch = savedCards.find((item) => item.movieId === card.id);
+            deleteMovieFromBundle(moviesForSearch._id);
+            console.log(moviesForSearch)
+        }
+        else {
             saveMovieToBundle(movie);
         }
         setIsLike(!isLike);
-    };
+    }
 
     function handleDeleteMovie(e) {
         deleteMovieFromBundle(card._id);
-        console.log(card._id)
     }
 
     useEffect(() => {
@@ -56,7 +58,7 @@ function Movie ({card, isSaved, savedMovies, saveMovieToBundle, deleteMovieFromB
                 </p>
                 <LikeBtn 
                     isLike={isLike}
-                    onMovieLike={isLike ? handleDeleteMovie : handleLikeMovie}
+                    onMovieLike={isSaved ? handleDeleteMovie : handleLikeMovie}
                 />
             </div>
             <p className="movies-card-item__duration">

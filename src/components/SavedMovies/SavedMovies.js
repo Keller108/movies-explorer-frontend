@@ -5,7 +5,7 @@ import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Footer from '../Footer/Footer';
 
-function SavedMovies({loggedIn, isNotFound, cards, savedMovies, isFilteredCards, onMoviesSearch, onSavedMoviesSearch, isLoading, setFilter, saveMovieToBundle, deleteMovieFromBundle}) {
+function SavedMovies({loggedIn, isNotFound, cards, savedCards, isFilteredCards, onMoviesSearch, onSavedMoviesSearch, isLoading, setFilter, saveMovieToBundle, deleteMovieFromBundle}) {
 
     function filterChange() {
         setFilter();
@@ -29,7 +29,7 @@ function SavedMovies({loggedIn, isNotFound, cards, savedMovies, isFilteredCards,
             <MoviesCardList 
                 isBtnDisabled={true}
                 cards={cards}
-                savedMovies={savedMovies}
+                savedCards={savedCards}
                 isLoading={isLoading}
                 isNotFound={isNotFound}
                 saveMovieToBundle={saveMovieToBundle}
