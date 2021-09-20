@@ -88,7 +88,7 @@ export const saveMovie = ({movie}) => {
     .then(handleResponse);
 };
 
-export const deleteMovie = (id) => {
+export const deleteMovie = ({id}) => {
   return fetch(`${baseUrl}/movies/${id}`, {
     method: 'DELETE',
     headers: {

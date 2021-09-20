@@ -36,6 +36,7 @@ function Movie ({card, isSaved, savedMovies, saveMovieToBundle, deleteMovieFromB
 
     function handleDeleteMovie(e) {
         deleteMovieFromBundle(card._id);
+        console.log(card._id)
     }
 
     useEffect(() => {
@@ -57,9 +58,8 @@ function Movie ({card, isSaved, savedMovies, saveMovieToBundle, deleteMovieFromB
                 </p>
                 <LikeBtn 
                     isLike={isLike}
-                    isSave={isSaved}
-                    handleLikeMovie={handleLikeMovie}
-                    handleDeleteMovie={handleDeleteMovie}
+                    isSaved={isSaved}
+                    onClick={isSaved ? handleDeleteMovie : handleLikeMovie}
                 />
             </div>
             <p className="movies-card-item__duration">

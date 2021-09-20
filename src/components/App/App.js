@@ -300,6 +300,12 @@ function App() {
         setSavedFilteredShortTimeCards(result);
       }
   }, [isFilteredCards]);
+
+  useEffect(() => {
+    if (pathname === '/saved-movies') {
+      setSavedFilteredCards(savedCards)
+    }
+  })
  
   return (
     <CurrentUserContext.Provider value={currentUser}>
