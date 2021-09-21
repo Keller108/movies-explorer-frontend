@@ -1,25 +1,25 @@
-import React, { useState } from 'react';
+import React from 'react';
 import FormSection from '../FormSection/FormSection';
 import '../Form/Form.css';
+import { useFormValidation } from '../../hooks/useFormValidation';
 
 function Login({ onLogin }) {
     
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const { values, handleChange, errors, isValid, resetForm } = useFormValidation();
     
-    const handleChangeEmail = (e) => {
-        setEmail(e.target.value)
-    }
-
-    const handleChanglePassword = (e) => {
-        setPassword(e.target.value)
-    }
+    function handleChangeInput(e) {
+        handleChange(e);
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onLogin({email, password})
+        onLogin({ email: values.email, password: values.password });
+        resetForm();
+    };
 
-    }
+    function handleClearErrors() {
+        resetForm();
+    };
     
     return (
         <FormSection
@@ -37,13 +37,16 @@ function Login({ onLogin }) {
                             id="form-email"
                             name="email"
                             placeholder="Ваш e-mail"
-                            value={email || ''}
-                            onChange={handleChangeEmail}
+                            value={values.email || ''}
+                            onChange={handleChangeInput}
                             type="email"
                             minLength="8"
                             maxLength="30"
                             required
                         />
+                        <span className="form__error">
+                            {errors.email}
+                        </span>
                     </label>
                     <label className="form__label" htmlFor="form-password">
                         Пароль
@@ -53,13 +56,21 @@ function Login({ onLogin }) {
                             name="password"
                             placeholder="Ваш пароль"
                             type="password"
+                            value={values.password || ''}
                             minLength="8"
-                            onChange={handleChanglePassword}
+                            onChange={handleChangeInput}
                             required
                         />
+                        <span className="form__error">
+                            {errors.password}
+                        </span>
                     </label>
                 </ul>
-                <button className="form__submit-btn" type="submit">
+                <button 
+                    className={isValid ? `form__submit-btn` : `form__submit-btn form__submit-btn_disabled`} 
+                    disabled={!isValid} 
+                    type="submit"
+                >
                     Войти
                 </button>
             </form>

@@ -1,32 +1,27 @@
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import './Profile.css';
 import Header from '../Header/Header';
+import { useFormValidation } from '../../hooks/useFormValidation';
 
 function Profile({loggedIn, userData, onProfileChange, onLogout }) {
 
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
+    const { values, handleChange, errors, isValid, resetForm, setValues } = useFormValidation();
     const currentUser = useContext(CurrentUserContext);
-    
+
     useEffect(() => {
-        setName(currentUser.name);
-        setEmail(currentUser.email);
-    }, [loggedIn, currentUser])
+        setValues(currentUser);
+    }, [currentUser, setValues]);
 
-    const handleChangeName = (e) => {
-        setName(e.target.value)
-    }
-
-    const handleChangeEmail = (e) => {
-        setEmail(e.target.value)
-    }
+    function handleChangeInput(e) {
+        handleChange(e);
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onProfileChange({name, email})
-
-    }
+        onProfileChange({ name: values.name, email: values.email});
+        resetForm();
+    };
 
     return (    
         <>
@@ -39,20 +34,26 @@ function Profile({loggedIn, userData, onProfileChange, onLogout }) {
                         Привет, {userData.name}!
                     </h1>
                     <div className="profile__inputs-wrapper">
-                        <div className="profile__label-wrapper"> 
+                        <div className="profile__label-wrapper">
                             <label className="profile__label" htmlFor="profile-name">
-                                Имя
+                                    Имя
                             </label>
-                            <input
-                                className="profile__input"
-                                id="profile-name"
-                                placeholder="Ваше имя"
-                                name="name"
-                                onChange={handleChangeName}
-                                value={name || ''}
-                                maxLength="30"
-                                minLength="2"
-                            />
+                                <input
+                                    className="profile__input"
+                                    id="profile-name"   
+                                    placeholder="Ваше имя"
+                                    name="name"
+                                    onChange={handleChangeInput}
+                                    value={values.name || ''}
+                                    pattern="[а-яА-Яa-zA-ZёË\- ]{1,}"
+                                    maxLength="30"
+                                    minLength="2"
+                                    type="text"
+                                    required
+                                />
+                                <span className="profile__error">
+                                    {errors.name}
+                                </span>
                         </div>
                         <div className="profile__border-line"></div>
                         <div className="profile__label-wrapper"> 
@@ -66,12 +67,16 @@ function Profile({loggedIn, userData, onProfileChange, onLogout }) {
                                 id="profile-email"
                                 type="email"
                                 name="email"
-                                onChange={handleChangeEmail}
-                                value={email || ''}
+                                onChange={handleChangeInput}
+                                value={values.email || ''}
                                 placeholder="Ваш е-mail"
                                 maxLength="30"
                                 minLength="8"
+                                required
                             />
+                            <span className="profile__error">
+                                {errors.email}
+                            </span>
                         </div>    
                     </div>
                     <ul className="profile__action-container">
@@ -82,6 +87,7 @@ function Profile({loggedIn, userData, onProfileChange, onLogout }) {
                             <button
                                 className="profile__action-btn profile__action-btn_type_signout transparent-link"
                                 type="button"
+                                disabled={!isValid} 
                                 onClick={onLogout}
                             >Выйти из аккаунта</button>
                         </li>

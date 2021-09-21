@@ -1,29 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
 import FormSection from '../FormSection/FormSection';
+import { useFormValidation } from '../../hooks/useFormValidation';
 
 function Register({ onRegister }) {
 
-    const [email, setEmail] = useState('');
-    const [name, setName] = useState('');
-    const [password, setPassword] = useState('');
+    const { values, handleChange, errors, isValid, resetForm } = useFormValidation();
     
-    const handleChangeEmail = (e) => {
-        setEmail(e.target.value)
-    }
-
-    const handleChangeName = (e) => {
-        setName(e.target.value)
-    }
-
-    const handleChanglePassword = (e) => {
-        setPassword(e.target.value)
-    }
+    function handleChangeInput(e) {
+        handleChange(e);
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onRegister({name, email, password})
-
-    }
+        onRegister({ email: values.email, name: values.name, password: values.password });
+        resetForm();
+    };
 
     return (
         <FormSection
@@ -41,13 +32,17 @@ function Register({ onRegister }) {
                             id="form-name"
                             name="name"
                             placeholder="Ваше имя"
-                            value={name || ''}
-                            onChange={handleChangeName}
+                            value={values.name || ''}
+                            pattern="[а-яА-Яa-zA-ZёË\- ]{1,}"
+                            onChange={handleChangeInput}
                             type="text"
                             minLength="2"   
                             maxLength="30"
                             required
                         />
+                        <span className="form__error">
+                            {errors.name}
+                        </span>
                     </label>
                     <label className="form__label" htmlFor="form-email">
                         E-mail
@@ -56,13 +51,16 @@ function Register({ onRegister }) {
                             id="form-email"
                             name="email"
                             placeholder="Ваш e-mail"
-                            value={email || ''}
-                            onChange={handleChangeEmail}
+                            value={values.email || ''}
+                            onChange={handleChangeInput}
                             type="email"
                             minLength="8"
                             maxLength="30"
                             required
                         />
+                        <span className="form__error">
+                            {errors.email}
+                        </span>
                     </label>
                     <label className="form__label" htmlFor="form-password">
                         Пароль
@@ -71,14 +69,22 @@ function Register({ onRegister }) {
                             id="form-password"
                             name="password"
                             placeholder="Ваш пароль"
+                            value={values.password || ''}
                             type="password"
                             minLength="8"
-                            onChange={handleChanglePassword}
+                            onChange={handleChangeInput}
                             required
                         />
+                        <span className="form__error">
+                            {errors.password}
+                        </span>
                     </label>
                 </ul>
-                <button className="form__submit-btn" type="submit">
+                <button
+                    className={isValid ? `form__submit-btn` : `form__submit-btn form__submit-btn_disabled`} 
+                    disabled={!isValid} 
+                    type="submit"
+                >
                     Зарегистрироваться
                 </button>
             </form>

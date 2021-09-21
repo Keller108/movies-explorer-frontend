@@ -53,11 +53,11 @@
 .profile__label-wrapper {
     position: relative;
     display: flex;
-    flex-direction: row;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-end;
     justify-content: flex-start;
     width: 100%;
-    height: 48px;
+    min-height: 48px;
     padding: 0;
     margin: 0;
     box-sizing: border-box;
@@ -68,7 +68,7 @@
 
 .profile__label {
     position: absolute;
-    top: 18px;
+    top: 10px;
     width: 100%;
     padding: 0;
     margin: 0;
@@ -77,17 +77,20 @@
     line-height: 1;
     font-weight: 500;
     text-align: left;
+    z-index: 1;
 }
 
 .profile__input {
+    position: relative;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: flex-end;
     width: 100%;
-    height: 48px;
+    height: 100%;
+    height: 30px;
     padding: 0;
-    margin: 15px 0;
+    margin: 0;
     box-sizing: border-box;
     color: #fff;
     font-size: 11px;
@@ -97,6 +100,25 @@
     border: 0;
     outline: 0;
     text-align: end;
+    z-index: 2;
+}
+
+
+.profile__error {
+    position: absolute;
+    bottom: 2px;
+    font-size: 10px;
+    font-weight: normal;
+    line-height: 1.4;
+    color: #EE3465;
+    margin: 0;
+    margin-bottom: 2px;
+    margin-top: 10px;
+    text-align: right;
+}
+
+.profile__error:last-of-type {
+    top: 20px;
 }
 
 .profile__input::placeholder {
