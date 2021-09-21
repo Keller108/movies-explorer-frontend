@@ -4,7 +4,7 @@ import './Profile.css';
 import Header from '../Header/Header';
 import { useFormValidation } from '../../hooks/useFormValidation';
 
-function Profile({loggedIn, userData, onProfileChange, onLogout }) {
+function Profile({loggedIn, userData, onProfileChange, onLogout, profileText, setProfileText}) {
 
     const { values, handleChange, errors, isValid, resetForm, setValues } = useFormValidation();
     const currentUser = useContext(CurrentUserContext);
@@ -15,6 +15,9 @@ function Profile({loggedIn, userData, onProfileChange, onLogout }) {
 
     function handleChangeInput(e) {
         handleChange(e);
+        if (profileText.length > 0) {
+            setProfileText('');
+        }
     };
 
     const handleSubmit = (e) => {
@@ -80,6 +83,9 @@ function Profile({loggedIn, userData, onProfileChange, onLogout }) {
                         </div>    
                     </div>
                     <ul className="profile__action-container">
+                        <span className="form__response-text-error">
+                            {profileText}
+                        </span>    
                         <li className="profile__action-item">
                             <button
                                 className="profile__action-btn transparent-link"

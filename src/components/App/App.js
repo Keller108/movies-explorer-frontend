@@ -28,6 +28,7 @@ function App() {
   const [savedFilteredShortTimeCards, setSavedFilteredShortTimeCards] = useState([]);
   const [isNotFound, setIsNotFound] = useState(false);
   const [isServerError, setIsServerError] = useState(false);
+  const [profileText, setProfileText] = useState('');
 
   const pathname = useLocation();
   const history = useHistory(); 
@@ -76,7 +77,8 @@ function App() {
           }
       })
       .catch((err) => { 
-          setIsServerError(true)
+          setIsServerError(true);
+          setProfileText('Не удалось загрузить данные');
       });
     };
   };
@@ -117,9 +119,13 @@ function App() {
     MoviesApi.updateInfo(userData)
     .then((data) => {
         setCurrentUser(data)
-        history.push('/')
+        history.push(pathname.pathname)
+        setProfileText('Профиль успешно обновлен.');
     })
-    .catch(err => console.log(err));
+    .catch((err) => {
+      console.log(err);
+      setProfileText('При обновлении профиля произошла ошибка.');
+    });
   }
 
   function signOut() {
@@ -280,6 +286,7 @@ function App() {
 
   function clearingErrors() {
     setIsNotFound(false);
+    setProfileText('');
   }
 
   useEffect(() => {
@@ -365,6 +372,8 @@ function App() {
                     loggedIn={loggedIn}
                     onProfileChange={handleUpdateUser}
                     onLogout={signOut}
+                    profileText={profileText}
+                    setProfileText={setProfileText}
                   />
                   <Route exact path="/signup">
                    { loggedIn ? <Redirect to="/movies"/> : <Register onRegister={handleRegister} />}
