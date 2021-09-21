@@ -30,6 +30,7 @@ function Register({ onRegister, registerText, setRegisterText, clearingErrors })
             linkText='Уже зарегистрированы? '
             linkPath={'/signin'}
             linkTitle='Войти'
+            onClearingErrors={onClearingErrors}
         >
             <form className="form" name="register-form" onSubmit={handleSubmit}>
                 <ul className="form__inputs-wrapper">
@@ -95,7 +96,6 @@ function Register({ onRegister, registerText, setRegisterText, clearingErrors })
                     className={isValid ? `form__submit-btn` : `form__submit-btn form__submit-btn_disabled`} 
                     disabled={!isValid} 
                     type="submit"
-                    onClick={onClearingErrors}
                 >
                     Зарегистрироваться
                 </button>

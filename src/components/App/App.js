@@ -406,7 +406,6 @@ function App() {
                         onLogin={handleLogin}
                         loginText={loginText}
                         setLoginText={setLoginText}
-                        clearingErrors={clearingErrors}
                       />}  
                   </Route>
                   <Route path="*">

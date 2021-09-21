@@ -31,6 +31,7 @@ function Login({ onLogin, loginText, setLoginText, clearingErrors}) {
             linkText='Ещё не зарегистрированы? '
             linkPath={'/signup'}
             linkTitle='Регистрация'
+            onClearingErrors={onClearingErrors}
         >
         <form className="form" name="login-form" onSubmit={handleSubmit}>
                 <ul className="form__inputs-wrapper">
@@ -77,7 +78,6 @@ function Login({ onLogin, loginText, setLoginText, clearingErrors}) {
                     className={isValid ? `form__submit-btn` : `form__submit-btn form__submit-btn_disabled`} 
                     disabled={!isValid} 
                     type="submit"
-                    onClick={onClearingErrors}
                 >
                     Войти
                 </button>
