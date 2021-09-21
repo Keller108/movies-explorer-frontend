@@ -62,6 +62,7 @@ function App() {
         setSavedCards(savedResult);
         setSavedFilteredCards(savedResult);
       }
+      history.push('/movies');
       MoviesApi.getContent(jwt)
       .then((res) => {
           if (res) {
@@ -69,7 +70,6 @@ function App() {
               name: res.name,
               email: res.email,
             })
-            history.push(pathname.pathname)
             setLoggedIn(true)
           } else {
               localStorage.removeItem('jwt')
@@ -85,7 +85,7 @@ function App() {
     return MoviesApi.register(name, email, password)
     .then((res) => {
         if (res) {
-            history.push('/signin')
+          handleLogin({email, password})
         } else {
             Promise.reject(`Ошибка ${res.status}`)
         }
@@ -367,13 +367,13 @@ function App() {
                     onLogout={signOut}
                   />
                   <Route exact path="/signup">
-                   { loggedIn ? <Redirect to="/"/> : <Register onRegister={handleRegister} />}
+                   { loggedIn ? <Redirect to="/movies"/> : <Register onRegister={handleRegister} />}
                       <Register
                         onRegister={handleRegister}
                       />
                   </Route>
                   <Route exact path="/signin">
-                    { loggedIn ? <Redirect to="/"/> : <Login onLogin={handleLogin} />}  
+                    { loggedIn ? <Redirect to="/movies"/> : <Login onLogin={handleLogin} />}  
                   </Route>
                   <Route path="*">
                       <NotFound />
