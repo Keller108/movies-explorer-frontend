@@ -3,12 +3,15 @@ import FormSection from '../FormSection/FormSection';
 import '../Form/Form.css';
 import { useFormValidation } from '../../hooks/useFormValidation';
 
-function Login({ onLogin }) {
+function Login({ onLogin, loginText, setLoginText, clearingErrors}) {
     
     const { values, handleChange, errors, isValid, resetForm } = useFormValidation();
     
     function handleChangeInput(e) {
         handleChange(e);
+        if (loginText.length > 0) {
+            setLoginText('');
+        }
     };
 
     const handleSubmit = (e) => {
@@ -17,8 +20,9 @@ function Login({ onLogin }) {
         resetForm();
     };
 
-    function handleClearErrors() {
+    function onClearingErrors() {
         resetForm();
+        clearingErrors();
     };
     
     return (
@@ -66,10 +70,14 @@ function Login({ onLogin }) {
                         </span>
                     </label>
                 </ul>
+                <span className="form__response-text-error form__response-text-error_place_register">
+                    {loginText}
+                </span>
                 <button 
                     className={isValid ? `form__submit-btn` : `form__submit-btn form__submit-btn_disabled`} 
                     disabled={!isValid} 
                     type="submit"
+                    onClick={onClearingErrors}
                 >
                     Войти
                 </button>

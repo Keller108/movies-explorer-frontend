@@ -2,12 +2,15 @@ import React from 'react';
 import FormSection from '../FormSection/FormSection';
 import { useFormValidation } from '../../hooks/useFormValidation';
 
-function Register({ onRegister }) {
+function Register({ onRegister, registerText, setRegisterText, clearingErrors }) {
 
     const { values, handleChange, errors, isValid, resetForm } = useFormValidation();
     
     function handleChangeInput(e) {
         handleChange(e);
+        if (registerText.length > 0) {
+            setRegisterText('');
+        }
     };
 
     const handleSubmit = (e) => {
@@ -15,6 +18,11 @@ function Register({ onRegister }) {
         onRegister({ email: values.email, name: values.name, password: values.password });
         resetForm();
     };
+
+    function onClearingErrors() {
+        resetForm();
+        clearingErrors();
+    }
 
     return (
         <FormSection
@@ -80,10 +88,14 @@ function Register({ onRegister }) {
                         </span>
                     </label>
                 </ul>
+                <span className="form__response-text-error form__response-text-error_place_register">
+                    {registerText}
+                </span>
                 <button
                     className={isValid ? `form__submit-btn` : `form__submit-btn form__submit-btn_disabled`} 
                     disabled={!isValid} 
                     type="submit"
+                    onClick={onClearingErrors}
                 >
                     Зарегистрироваться
                 </button>

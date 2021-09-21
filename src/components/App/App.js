@@ -29,6 +29,8 @@ function App() {
   const [isNotFound, setIsNotFound] = useState(false);
   const [isServerError, setIsServerError] = useState(false);
   const [profileText, setProfileText] = useState('');
+  const [registerText, setRegisterText] = useState('');
+  const [loginText, setLoginText] = useState('');
 
   const pathname = useLocation();
   const history = useHistory(); 
@@ -92,7 +94,11 @@ function App() {
             Promise.reject(`Ошибка ${res.status}`)
         }
     })
-    .catch(err => console.log(err));
+    .catch((err) => {
+      setRegisterText('Что-то пошло не так =(');
+      if (err === 400) return setRegisterText('Некорректно заполнено одно из полей.');
+      if (err === 409) return setRegisterText('Такой пользователь уже существует!');
+    });
   };
 
   function handleLogin ({email, password}) {
@@ -112,7 +118,12 @@ function App() {
               .catch(err => console.log(err));
       }            
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      if (err === 400) return setLoginText('Не заполнено одно из полей.');
+      if (err === 401) return setLoginText('Пользователь с такиим email не найден.');
+      setLoginText('Где-то ошибка. Попробуйте еще раз.');
+      console.log(err);
+    });
   };
 
   function handleUpdateUser(userData) {
@@ -287,6 +298,8 @@ function App() {
   function clearingErrors() {
     setIsNotFound(false);
     setProfileText('');
+    setRegisterText('');
+    setLoginText('');
   }
 
   useEffect(() => {
@@ -376,13 +389,25 @@ function App() {
                     setProfileText={setProfileText}
                   />
                   <Route exact path="/signup">
-                   { loggedIn ? <Redirect to="/movies"/> : <Register onRegister={handleRegister} />}
+                    { loggedIn ?
+                      <Redirect to="/movies"/> :
                       <Register
+                        registerText={registerText}
+                        setRegisterText={setRegisterText}
                         onRegister={handleRegister}
+                        clearingErrors={clearingErrors}
                       />
+                    }
                   </Route>
                   <Route exact path="/signin">
-                    { loggedIn ? <Redirect to="/movies"/> : <Login onLogin={handleLogin} />}  
+                    { loggedIn ?
+                      <Redirect to="/movies"/> :
+                      <Login
+                        onLogin={handleLogin}
+                        loginText={loginText}
+                        setLoginText={setLoginText}
+                        clearingErrors={clearingErrors}
+                      />}  
                   </Route>
                   <Route path="*">
                       <NotFound />
