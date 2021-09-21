@@ -174,7 +174,7 @@ function App() {
     }
     
     setTimeout(() => {
-      setIsNotFound(false);
+      setIsLoading(false);
     }, 900);
   }
 
@@ -273,7 +273,6 @@ function App() {
 
   function clearingErrors() {
     setIsNotFound(false);
-    setIsLoading(false)
   }
 
   useEffect(() => {
