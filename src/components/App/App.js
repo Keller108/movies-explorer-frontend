@@ -99,7 +99,7 @@ function App() {
         if (res.token) {
             localStorage.setItem('jwt', res.token);
             setLoggedIn(true);
-            history.push('/')
+            history.push('/movies')
             tokenCheck();
             MoviesApi.getSavedMovies()
               .then((movies) => {
