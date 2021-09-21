@@ -66,9 +66,9 @@ function Movies({loggedIn, isNotFound, cards, savedCards, isFilteredCards, onMov
     return (
         <>
             <Header 
-                isMainActive={true}
+                isMainActive={false}
                 isSavedMoviesActive={false}
-                isMoviesActive={false}
+                isMoviesActive={true}
                 loggedIn={loggedIn}
             />
             <SearchForm
@@ -80,15 +80,20 @@ function Movies({loggedIn, isNotFound, cards, savedCards, isFilteredCards, onMov
             />
             <MoviesCardList 
                 cards={cardsVisible}
+                cardsVisible={cardsVisible}
                 savedCards={savedCards}
                 isLoading={isLoading}
                 isNotFound={isNotFound}
                 saveMovieToBundle={saveMovieToBundle}
                 deleteMovieFromBundle={deleteMovieFromBundle}
                 isSaved={false}
-                onAddMovies={addCardsToVisibleList}
                 isServerError={isServerError}
             />
+            <button
+                onClick ={addCardsToVisibleList}
+                className={cardsVisible.length === cards.length ? `movies-card-item__more-btn movies-card-item__more-btn_disabled` : `movies-card-item__more-btn`}>
+                Ещё
+            </button>
             <Footer />
         </>
     )

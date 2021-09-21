@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import './MoviesCardList.css';
 import Preloader from '../Preloader/Preloader';
 import Movie from '../Movie/Movie';
 
-function MoviesCardList({cards, savedCards, isLoading, isSaved, isNotFound, saveMovieToBundle, deleteMovieFromBundle, isBtnDisabled, onAddMovies, isServerError}) {
+function MoviesCardList({cards, savedCards, isLoading, isSaved, isNotFound, saveMovieToBundle, deleteMovieFromBundle, isServerError}) {
 
     return (
         <section className="movies-card-section">
@@ -28,9 +28,6 @@ function MoviesCardList({cards, savedCards, isLoading, isSaved, isNotFound, save
                     />     
                 ))}
             </ul>
-            <button onClick ={onAddMovies} className={isBtnDisabled ? `movies-card-item__more-btn movies-card-item__more-btn_disabled` : `movies-card-item__more-btn`}>
-                Ещё
-            </button>
         </section>   
     )
 };
