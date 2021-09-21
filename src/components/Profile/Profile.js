@@ -81,13 +81,18 @@ function Profile({loggedIn, userData, onProfileChange, onLogout }) {
                     </div>
                     <ul className="profile__action-container">
                         <li className="profile__action-item">
-                            <button className="profile__action-btn transparent-link" type="submit">Редактировать</button>
+                            <button
+                                className="profile__action-btn transparent-link"
+                                disabled={!isValid}
+                                type="submit"
+                            >
+                                Редактировать
+                            </button>
                         </li>
                         <li className="profile__action-item">
                             <button
                                 className="profile__action-btn profile__action-btn_type_signout transparent-link"
-                                type="button"
-                                disabled={!isValid} 
+                                type="button" 
                                 onClick={onLogout}
                             >Выйти из аккаунта</button>
                         </li>
