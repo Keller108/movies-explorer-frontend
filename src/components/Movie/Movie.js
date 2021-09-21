@@ -57,6 +57,7 @@ function Movie ({card, isSaved, savedCards, saveMovieToBundle, deleteMovieFromBu
                     {card.nameRU}
                 </p>
                 <LikeBtn 
+                    isSaved={isSaved}
                     isLike={isLike}
                     onMovieLike={isSaved ? handleDeleteMovie : handleLikeMovie}
                 />
