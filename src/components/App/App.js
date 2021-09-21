@@ -42,7 +42,6 @@ function App() {
       MoviesApi.getInfo()
         .then((data) => {
             setCurrentUser(data)
-            history.push('/');
         })
         .catch(err => console.log(err))
     }
@@ -368,11 +367,11 @@ function App() {
                         onLogin={handleLogin}
                       />
                   </Route>
+                  <Route path="*">
+                      <NotFound />
+                  </Route>
                   <Route>
                     { loggedIn ? <Redirect to="/"/> : <Redirect to="/signin"/>}
-                  </Route>
-                  <Route exact path="*">
-                      <NotFound />
                   </Route>
                 </Switch>
           </div>
