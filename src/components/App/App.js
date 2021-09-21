@@ -10,8 +10,8 @@ import Register from '../Register/Register';
 import Login from '../Login/Login';
 import NotFound from '../NotFound/NotFound';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
-import * as mainApi from '../../utils/MainApi';
-import * as moviesApi from '../../utils/MoviesApi';
+import * as MoviesApi from '../../utils/MoviesApi';
+import * as MainApi from '../../utils/MainApi';
 
 function App() {
 
@@ -39,7 +39,7 @@ function App() {
 
   useEffect(() => {
     if (loggedIn) { 
-      mainApi.getInfo()
+      MoviesApi.getInfo()
         .then((data) => {
             setCurrentUser(data)
             history.push('/');
@@ -62,7 +62,7 @@ function App() {
         setSavedCards(savedResult);
         setSavedFilteredCards(savedResult);
       }
-      mainApi.getContent(jwt)
+      MoviesApi.getContent(jwt)
       .then((res) => {
           if (res) {
             setUserData({
@@ -83,7 +83,7 @@ function App() {
   };
 
   function handleRegister ({name, email, password}) {
-    return mainApi.register(name, email, password)
+    return MoviesApi.register(name, email, password)
     .then((res) => {
         if (res) {
             history.push('/signin')
@@ -95,13 +95,13 @@ function App() {
   };
 
   function handleLogin ({email, password}) {
-    return mainApi.authorize(email, password)
+    return MoviesApi.authorize(email, password)
       .then((res) => {
         if (res.token) {
             localStorage.setItem('jwt', res.token);
             setLoggedIn(true);
             tokenCheck();
-            mainApi.getSavedMovies()
+            MoviesApi.getSavedMovies()
               .then((movies) => {
                 setSavedCards(movies);
                 setSavedFilteredCards(movies);
@@ -114,7 +114,7 @@ function App() {
   };
 
   function handleUpdateUser(userData) {
-    mainApi.updateInfo(userData)
+    MoviesApi.updateInfo(userData)
     .then((data) => {
         setCurrentUser(data)
         history.push('/')
@@ -149,7 +149,7 @@ function App() {
       }
       setFilteredCards(result);
     } else {
-      moviesApi.getMovies()
+      MainApi.getMovies()
       .then((data) => {
         setCards(data)
         localStorage.setItem('movies', JSON.stringify(data));
@@ -174,7 +174,7 @@ function App() {
     }
     
     setTimeout(() => {
-      setIsLoading(false);
+      setIsNotFound(false);
     }, 900);
   }
 
@@ -185,7 +185,7 @@ function App() {
       setSavedFilteredCards(goSearch(savedCards, value));
     } else {
       setIsLoading(true);
-      mainApi.getSavedMovies()
+      MoviesApi.getSavedMovies()
         .then((res) => {
           setSavedCards(res);
           localStorage.setItem('savedMovies', JSON.stringify(res));
@@ -207,7 +207,7 @@ function App() {
 
   function saveMovieToBundle(movie) {
     setIsLoading(true);
-      mainApi.saveMovie({movie})
+      MoviesApi.saveMovie({movie})
         .then((res) => {
           const movies = [...savedCards, res];
           localStorage.setItem('savedMovies', JSON.stringify(movies));
@@ -230,7 +230,7 @@ function App() {
 
   function deleteMovieFromBundle(id) {
     setIsLoading(true);
-    mainApi.deleteMovie({id})
+    MoviesApi.deleteMovie({id})
       .then(() => {
         const result = filterMoviesById(savedCards, id);
         setSavedCards(result);
@@ -270,6 +270,11 @@ function App() {
   function switchFilter() {
     setIsFilteredCards(!isFilteredCards)
   };
+
+  function clearingErrors() {
+    setIsNotFound(false);
+    setIsLoading(false)
+  }
 
   useEffect(() => {
     setIsNotFound(false);
@@ -328,6 +333,7 @@ function App() {
                     saveMovieToBundle={saveMovieToBundle}
                     deleteMovieFromBundle={deleteMovieFromBundle}
                     onSavedMoviesSearch={searchSavedToBundleMovies}
+                    clearingErrors={clearingErrors}
                   />
                   <ProtectedRoute 
                     exact path="/saved-movies"
@@ -343,6 +349,7 @@ function App() {
                     saveMovieToBundle={saveMovieToBundle}
                     deleteMovieFromBundle={deleteMovieFromBundle}
                     onSavedMoviesSearch={searchSavedToBundleMovies}
+                    clearingErrors={clearingErrors}
                   />
                   <ProtectedRoute 
                     exact path="/profile"

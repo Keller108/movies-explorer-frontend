@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './MoviesCardList.css';
 import Preloader from '../Preloader/Preloader';
 import Movie from '../Movie/Movie';
 
 function MoviesCardList({cards, savedCards, isLoading, isSaved, isNotFound, saveMovieToBundle, deleteMovieFromBundle, isBtnDisabled}) {
+
     return (
         <section className="movies-card-section">
             <Preloader 

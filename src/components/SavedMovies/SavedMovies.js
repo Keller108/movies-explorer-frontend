@@ -1,15 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './SavedMovies.css';
 import Header from '../Header/Header';
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Footer from '../Footer/Footer';
 
-function SavedMovies({loggedIn, isNotFound, cards, savedCards, isFilteredCards, onMoviesSearch, onSavedMoviesSearch, isLoading, setFilter, saveMovieToBundle, deleteMovieFromBundle}) {
+function SavedMovies({loggedIn, isNotFound, cards, savedCards, isFilteredCards, onMoviesSearch, onSavedMoviesSearch, isLoading, setFilter, saveMovieToBundle, deleteMovieFromBundle, clearingErrors}) {
 
     function filterChange() {
         setFilter();
     }
+
+    useEffect(() => {
+        clearingErrors();
+    }, []);
 
     return (
         <>
@@ -35,6 +39,7 @@ function SavedMovies({loggedIn, isNotFound, cards, savedCards, isFilteredCards, 
                 saveMovieToBundle={saveMovieToBundle}
                 deleteMovieFromBundle={deleteMovieFromBundle}
                 isSaved={true}
+                clearingErrors={clearingErrors}
             />
             <Footer />
         </>
