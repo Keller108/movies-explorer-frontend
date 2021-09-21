@@ -27,6 +27,7 @@ function App() {
   const [savedFilteredCards, setSavedFilteredCards] = useState([]);
   const [savedFilteredShortTimeCards, setSavedFilteredShortTimeCards] = useState([]);
   const [isNotFound, setIsNotFound] = useState(false);
+  const [isServerError, setIsServerError] = useState(false);
 
   const pathname = useLocation();
   const history = useHistory(); 
@@ -74,11 +75,10 @@ function App() {
               localStorage.removeItem('jwt')
           }
       })
-      .catch(err => { 
-          console.log(err);
-          history.push('/signin');
+      .catch((err) => { 
+          setIsServerError(true)
       });
-    };  
+    };
   };
 
   function handleRegister ({name, email, password}) {
@@ -99,6 +99,7 @@ function App() {
         if (res.token) {
             localStorage.setItem('jwt', res.token);
             setLoggedIn(true);
+            history.push('/')
             tokenCheck();
             MoviesApi.getSavedMovies()
               .then((movies) => {
@@ -138,6 +139,7 @@ function App() {
   // ПОИСК ФИЛЬМОВ //
 
   function handleSearchMovies(value) {
+    setIsServerError(false);
     setIsLoading(true)
     if (cards.length > 0) {
       const result = goSearch(cards, value)
@@ -169,7 +171,9 @@ function App() {
             setFilteredShortTimeCards(resultShortTimeFilter);
           }
       })
-      .catch(err => console.log(err));
+      .catch((err) => { 
+        setIsServerError(true)
+      });
     }
     
     setTimeout(() => {
@@ -218,7 +222,9 @@ function App() {
             setSavedFilteredCards(i => [...i, res]);
         }
       })
-      .catch(err => console.log(err));
+      .catch((err) => { 
+        setIsServerError(true)
+      });
 
     setTimeout(() => {
       setIsLoading(false);
@@ -237,7 +243,9 @@ function App() {
         setSavedFilteredShortTimeCards(filterMoviesById(savedFilteredShortTimeCards, id));
         setSavedFilteredCards(filterMoviesById(savedFilteredCards, id));
       })
-      .catch(err => console.log(err));
+      .catch((err) => { 
+        setIsServerError(true)
+      });
 
     setTimeout(() => {
       setIsLoading(false);
@@ -332,6 +340,7 @@ function App() {
                     deleteMovieFromBundle={deleteMovieFromBundle}
                     onSavedMoviesSearch={searchSavedToBundleMovies}
                     clearingErrors={clearingErrors}
+                    isServerError={isServerError}
                   />
                   <ProtectedRoute 
                     exact path="/saved-movies"
@@ -358,20 +367,16 @@ function App() {
                     onLogout={signOut}
                   />
                   <Route exact path="/signup">
+                   { loggedIn ? <Redirect to="/"/> : <Register onRegister={handleRegister} />}
                       <Register
                         onRegister={handleRegister}
                       />
                   </Route>
                   <Route exact path="/signin">
-                      <Login
-                        onLogin={handleLogin}
-                      />
+                    { loggedIn ? <Redirect to="/"/> : <Login onLogin={handleLogin} />}  
                   </Route>
                   <Route path="*">
                       <NotFound />
-                  </Route>
-                  <Route>
-                    { loggedIn ? <Redirect to="/"/> : <Redirect to="/signin"/>}
                   </Route>
                 </Switch>
           </div>

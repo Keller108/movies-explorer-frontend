@@ -33,6 +33,15 @@
     margin-top: 40px;
 }
 
+.movies-card-section__text-server-error {
+    font-size: 16px;
+    font-weight: normal;
+    line-height: 1;
+    color: #fff;
+    margin: 0 auto;
+    margin-top: 40px;
+}
+
 .movies-card-section__text-not-found_hidden {
     display: none;
 }
