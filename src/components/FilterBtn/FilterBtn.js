@@ -1,22 +1,21 @@
 import React from 'react';
-import { useState } from 'react';
 import './FilterBtn.css';
 import Filter from '../Filter/Filter';
 
-function FilterBtn() {
-    const [isFilterOff, setIsFilterOff] = useState(false);
+function FilterBtn({isFilteredCards, onFilterChange}) {
 
-    function handleTumblerOff() {
-        setIsFilterOff(!isFilterOff)
+    function handleChangeFilter() {
+        onFilterChange();
     };
+
     return (
         <div className="filter-container">
             <button 
                 className="filter"
-                onClick={handleTumblerOff}
+                onClick={handleChangeFilter}
             >
             <Filter 
-                isOff={isFilterOff}
+                isFilteredCards={isFilteredCards}
             />
             </button> 
             <p className="filter__text">

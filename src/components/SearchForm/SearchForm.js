@@ -1,24 +1,49 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './SearchForm.css';
 import FilterBtn from '../FilterBtn/FilterBtn';
 
-function SearchForm() {
+function SearchForm({isSaved, onMoviesSearch, onSavedMoviesSearch, isFilteredCards, onFilterChange}) {
+    
+    const [textInput, setTextInput] = useState('');
+
+    function handleInputChange(e) {
+        setTextInput(e.target.value);
+    }
+
+    function handleSearchMovies(e) {
+        e.preventDefault();
+        onMoviesSearch(textInput);
+    }
+
+    function handleSearchSavedMovies(e) {
+        e.preventDefault();
+        onSavedMoviesSearch(textInput);
+    }
+
     return (
         <section className="search-form-section">
-            <form className="search-form">
+            <form className="search-form" onSubmit={isSaved ? handleSearchSavedMovies : handleSearchMovies}>
                 <input 
                     className="search-form__input"
                     placeholder="Фильм"
+                    onChange={handleInputChange}
+                    type="text"
+                    name="text"
+                    value={textInput}
+                    minLength="1"
                     required
                 />
                 <button 
                     className="search-form__btn"
-                    type="button"
+                    type="submit"
                 >
                     Найти
                 </button>
             </form>
-            <FilterBtn />
+            <FilterBtn 
+                isFilteredCards={isFilteredCards}
+                onFilterChange={onFilterChange}
+            />
         </section>
     )
 };

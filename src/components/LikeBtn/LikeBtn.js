@@ -1,23 +1,29 @@
 import React from 'react';
-import { useState } from 'react';
 import './LikeBtn.css';
 
-function LikeBtn (onLikeChange, isBtnLiked) {
-
-    const [isLiked, setIsLiked] = useState(false);
-
-    function handleLike () {
-        setIsLiked(!isLiked)
-    };
+function LikeBtn ({isLike, onMovieLike, isSaved}) {
 
     return (
-        <button 
-            onClick={handleLike}
-            className={isLiked ? `movies-card-item__like-btn movies-card-item__like-btn_visible` : `movies-card-item__like-btn`}
-            type="button"
-            aria-label="Like"
-        />
-    )
+        <>
+            { isSaved ? (
+                <button 
+                    onClick={onMovieLike}
+                    className="movies-card-item__like-btn_type_delete"
+                    type="button"
+                    aria-label="Remove Movie From Favourite"
+                    /> 
+                ) : 
+                (
+                    <button 
+                    onClick={onMovieLike}
+                    className={isLike ? `movies-card-item__like-btn movies-card-item__like-btn_visible` : `movies-card-item__like-btn`}
+                    type="button"
+                    aria-label="Like"
+                />        
+                )       
+            }
+    </>
+    );
 };
 
 export default LikeBtn;

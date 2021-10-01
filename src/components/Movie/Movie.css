@@ -10,9 +10,18 @@
     text-align: left;
 }
 
+.movies-card-item__link {
+    display: inline-flex;
+    width: 100%;
+    font-size: 0;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
 .movies-card-item__img {
     width: 100%;
-    height: auto;
+    height: 150px;
     margin: 0;
     font-size: 0;
     box-sizing: border-box;
