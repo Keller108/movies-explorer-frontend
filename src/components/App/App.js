@@ -33,8 +33,8 @@ function App() {
   const [loginText, setLoginText] = useState('');
 
   const pathname = useLocation();
-  const history = useHistory(); 
- 
+  const history = useHistory();
+
   // КЛИЕНТСКАЯ ЧАСТЬ //
 
   useEffect(() => {
@@ -42,7 +42,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (loggedIn) { 
+    if (loggedIn) {
       MoviesApi.getInfo()
         .then((data) => {
             setCurrentUser(data)
@@ -78,7 +78,7 @@ function App() {
               localStorage.removeItem('jwt')
           }
       })
-      .catch((err) => { 
+      .catch((err) => {
           setIsServerError(true);
           setProfileText('Не удалось загрузить данные');
       });
@@ -116,7 +116,7 @@ function App() {
                 localStorage.setItem('savedMovies', JSON.stringify(movies));
               })
               .catch(err => console.log(err));
-      }            
+      }
     })
     .catch(err => {
       if (err === 400) return setLoginText('Не заполнено одно из полей.');
@@ -188,11 +188,11 @@ function App() {
             setFilteredShortTimeCards(resultShortTimeFilter);
           }
       })
-      .catch((err) => { 
+      .catch((err) => {
         setIsServerError(true)
       });
     }
-    
+
     setTimeout(() => {
       setIsLoading(false);
     }, 900);
@@ -215,7 +215,7 @@ function App() {
 
       setTimeout(() => {
         setIsLoading(false);
-      }, 900);  
+      }, 900);
     };
   };
 
@@ -239,7 +239,7 @@ function App() {
             setSavedFilteredCards(i => [...i, res]);
         }
       })
-      .catch((err) => { 
+      .catch((err) => {
         setIsServerError(true)
       });
 
@@ -260,7 +260,7 @@ function App() {
         setSavedFilteredShortTimeCards(filterMoviesById(savedFilteredShortTimeCards, id));
         setSavedFilteredCards(filterMoviesById(savedFilteredCards, id));
       })
-      .catch((err) => { 
+      .catch((err) => {
         setIsServerError(true)
       });
 
@@ -270,7 +270,7 @@ function App() {
   };
 
   // ФИЛЬТРОВАНИЕ КАРТОЧЕК (ПО ВРЕМЕНИ И Т.Д.) //
-  
+
   function goSearch(list, searchText) {
     let result = [];
     list.forEach((movie) => {
@@ -334,14 +334,14 @@ function App() {
       setSavedFilteredCards(savedCards)
     }
   })
- 
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="App">
           <div className="page">
                 <Switch>
                   <Route exact path="/">
-                      <Main 
+                      <Main
                         loggedIn={loggedIn}
                       />
                   </Route>
@@ -362,7 +362,7 @@ function App() {
                     clearingErrors={clearingErrors}
                     isServerError={isServerError}
                   />
-                  <ProtectedRoute 
+                  <ProtectedRoute
                     exact path="/saved-movies"
                     component={SavedMovies}
                     loggedIn={loggedIn}
@@ -378,7 +378,7 @@ function App() {
                     onSavedMoviesSearch={searchSavedToBundleMovies}
                     clearingErrors={clearingErrors}
                   />
-                  <ProtectedRoute 
+                  <ProtectedRoute
                     exact path="/profile"
                     component={Profile}
                     userData={userData}
@@ -406,7 +406,7 @@ function App() {
                         onLogin={handleLogin}
                         loginText={loginText}
                         setLoginText={setLoginText}
-                      />}  
+                      />}
                   </Route>
                   <Route path="*">
                       <NotFound />
