@@ -1,4 +1,7 @@
 # Frontend (интерфейс) дипломного проекта Movies-Expolorer
+### Адрес бекенда: https://api.movies108.nomoredomains.monster
+### Адрес опубликованного полного проекта: https://movies108.nomoredomains.monster/
+
 ![image](https://user-images.githubusercontent.com/34595724/138551905-0d4a1a96-e334-4f92-8202-aae9617e810f.png)
 
 ### Инструменты использованы
@@ -17,9 +20,6 @@
 * BEM
 
 Описание: Одностраничное приложение SPA, разработанное на React.js. Для проверки полного функционала необходимо зарегистрироваться.
-
-### Адрес бекенда: https://api.movies108.nomoredomains.monster
-### Адрес опубликованного полного проекта: https://movies108.nomoredomains.monster/
 
 **Автор**
 Никита Исаев.
