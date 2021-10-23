@@ -18,8 +18,8 @@
 
 Описание: Одностраничное приложение SPA, разработанное на React.js. Для проверки полного функционала необходимо зарегистрироваться.
 
-# Адрес бекенда: https://api.movies108.nomoredomains.monster
-# Адрес опубликованного полного проекта: https://movies108.nomoredomains.monster/
+### Адрес бекенда: https://api.movies108.nomoredomains.monster
+### Адрес опубликованного полного проекта: https://movies108.nomoredomains.monster/
 
 **Автор**
 Никита Исаев.
